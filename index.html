@@ -339,12 +339,13 @@ footer b{ color:var(--text); }
 <!-- ===================== HERO ===================== -->
 <header class="wrap hero" id="presentacion">
   <section class="presentacion">
-    <div class="avatar">AC</div>
+    <!-- Cambia AC por tus iniciales, o pon <img src="foto.jpg" alt="Foto"> -->
+    <div class="avatar">JG</div>
 
     <div>
       <div class="saludo"><span class="punto"></span> Portafolio académico</div>
-      <h1 class="nombre">Hola, soy <span>Tu Nombre</span></h1>
-      <p class="rol">Estudiante de Ingeniería · Ciclo 2025</p>
+      <h1 class="nombre">Hola, soy <span>Jeremy Garcia</span></h1>
+      <p class="rol">Estudiante · Base de Datos 2026-II</p>
       <p class="bio">
         Bienvenido a mi repositorio digital de trabajos. Aquí organizo todas mis evidencias,
         tareas, informes y proyectos desarrollados durante el ciclo, distribuidos en
@@ -352,10 +353,9 @@ footer b{ color:var(--text); }
       </p>
 
       <div class="chips">
-        <span class="chip">📐 Ingeniería</span>
+        <span class="chip">🗄️ Base de Datos</span>
         <span class="chip">💻 Programación</span>
         <span class="chip">📊 Análisis de datos</span>
-        <span class="chip">🎨 Diseño</span>
         <span class="chip">📚 Investigación</span>
       </div>
 
@@ -405,8 +405,8 @@ footer b{ color:var(--text); }
 
 <!-- ===================== FOOTER ===================== -->
 <footer class="wrap">
-  <p>© <span id="anio"></span> <b>Tu Nombre</b> — Repositorio Digital de Trabajos</p>
-  <p style="margin-top:6px;font-size:.78rem;opacity:.75">Los archivos viven en GitHub. Sube nuevas tareas a <code>trabajos/&lt;semana&gt;/</code>.</p>
+  <p>© <span id="anio"></span> <b>Jeremy Garcia</b> — Repositorio Digital de Trabajos</p>
+  <p style="margin-top:6px;font-size:.78rem;opacity:.75">Los archivos viven en GitHub. Sube nuevas tareas a <code>Trabajos/&lt;semana&gt;/</code>.</p>
 </footer>
 
 <!-- ===================== MODAL VISOR ===================== -->
@@ -436,17 +436,15 @@ footer b{ color:var(--text); }
 
 <script>
 /* ================================================================
-   1. ⚙️ CONFIGURACIÓN — ¡EDITA SOLO ESTAS 4 LÍNEAS!
+   1. ⚙️ CONFIGURACIÓN — YA AJUSTADA A TU REPOSITORIO
    ================================================================ */
-const GITHUB_USUARIO = 'JeremyChGarcia';       // ← tu usuario de GitHub
-const GITHUB_REPO    = 'Base_De_Datos_2026_II';   // ← nombre del repositorio
-const GITHUB_RAMA    = 'main';             // ← 'main' o 'master'
-const CARPETA_BASE   = 'Trabajos';         // ← carpeta raíz de los archivos
+const GITHUB_USUARIO = 'JeremyChGarcia';
+const GITHUB_REPO    = 'Base_De_Datos_2026_II';
+const GITHUB_RAMA    = 'main';
+const CARPETA_BASE   = 'Trabajos';   // ← con T mayúscula, igual que tu carpeta en GitHub
 
 /* ================================================================
    2. UNIDADES Y SEMANAS
-   👉 Cada "id" de semana DEBE coincidir con el nombre de la carpeta
-      dentro de /trabajos/  (ej: u1s1 → trabajos/u1s1/)
    ================================================================ */
 const UNIDADES = [
   {
@@ -549,6 +547,12 @@ function escaparHTML(str){
    ================================================================ */
 const API_TREE = `https://api.github.com/repos/${GITHUB_USUARIO}/${GITHUB_REPO}/git/trees/${GITHUB_RAMA}?recursive=1`;
 const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_USUARIO}/${GITHUB_REPO}/${GITHUB_RAMA}/`;
+const CDN_BASE = `https://cdn.jsdelivr.net/gh/${GITHUB_USUARIO}/${GITHUB_REPO}@${GITHUB_RAMA}/`;
+
+// Codifica cada segmento de la ruta (para manejar espacios, tildes, etc.)
+function codificarRuta(p){
+  return p.split('/').map(encodeURIComponent).join('/');
+}
 
 let archivos = [];
 let filtro   = '';
@@ -578,14 +582,18 @@ async function cargarDesdeGitHub(){
         const rel = item.path.slice(prefijo.length);
         const partes = rel.split('/');
         if (partes.length < 2) return null;
+
         const nombre = partes.slice(1).join('/');
+        const rutaCod = codificarRuta(item.path);
+
         return {
           semana: partes[0],
           nombre: nombre,
           ext: obtenerExtension(nombre),
           ruta: item.path,
           peso: item.size || 0,
-          url: RAW_BASE + item.path
+          url:     RAW_BASE + rutaCod,   // para DESCARGAR (raw)
+          urlView: CDN_BASE + rutaCod    // para VISUALIZAR (jsDelivr)
         };
       })
       .filter(Boolean);
@@ -751,23 +759,31 @@ async function abrirVisor(ruta){
 
   const ext = a.ext;
 
+  // Para visualizar usamos jsDelivr. Si el archivo pesa >20MB, usamos raw
+  // (jsDelivr tiene un límite de 20 MB por archivo).
+  const V = (a.peso > 20 * 1024 * 1024) ? a.url : a.urlView;
+
+  // Mostramos un spinner mientras carga
+  modalBody.innerHTML = '<div class="cargando" style="height:100%;justify-content:center"><span class="spinner"></span> Cargando previsualización…</div>';
+  modal.classList.add('abierto');
+
   if (TIPOS.img.includes(ext)){
     modalBody.innerHTML = `<div style="display:grid;place-items:center;min-height:100%;padding:20px">
-      <img src="${a.url}" alt="${escaparHTML(a.nombre)}">
+      <img src="${V}" alt="${escaparHTML(a.nombre)}">
     </div>`;
   }
   else if (TIPOS.vid.includes(ext)){
-    modalBody.innerHTML = `<video src="${a.url}" controls autoplay></video>`;
+    modalBody.innerHTML = `<video src="${V}" controls autoplay></video>`;
   }
   else if (TIPOS.aud.includes(ext)){
-    modalBody.innerHTML = `<audio src="${a.url}" controls autoplay></audio>`;
+    modalBody.innerHTML = `<audio src="${V}" controls autoplay></audio>`;
   }
   else if (ext === 'pdf'){
-    modalBody.innerHTML = `<iframe src="${a.url}#toolbar=1&view=FitH" title="PDF"></iframe>`;
+    modalBody.innerHTML = `<iframe src="${V}#toolbar=1&view=FitH" title="PDF"></iframe>`;
   }
   else if (ext === 'html' || ext === 'htm'){
     try{
-      const res = await fetch(a.url);
+      const res = await fetch(V);
       const html = await res.text();
       const blob = new Blob([html], { type:'text/html' });
       const urlBlob = URL.createObjectURL(blob);
@@ -779,7 +795,7 @@ async function abrirVisor(ruta){
   else if (ext === 'docx' && window.docx){
     modalBody.innerHTML = '<div class="docx-wrap" id="docxCont"></div>';
     try{
-      const res = await fetch(a.url);
+      const res = await fetch(V);
       if (!res.ok) throw new Error('No se pudo descargar');
       const blob = await res.blob();
       await window.docx.renderAsync(blob, document.getElementById('docxCont'), null, {
@@ -792,7 +808,7 @@ async function abrirVisor(ruta){
   }
   else if (TIPOS.code.includes(ext)){
     try{
-      const res = await fetch(a.url);
+      const res = await fetch(V);
       const texto = await res.text();
       modalBody.innerHTML = `<pre>${escaparHTML(texto)}</pre>`;
     }catch{
@@ -806,8 +822,6 @@ async function abrirVisor(ruta){
       a
     );
   }
-
-  modal.classList.add('abierto');
 }
 
 function mostrarAviso(titulo, detalle, archivo){

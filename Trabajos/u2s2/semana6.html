@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📚 Proyectos SQL Server - GradosTitulos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1e293b;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #0f172a, #1e3a5f);
+            color: #fff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-left: auto;
+        }
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .index-grid a {
+            display: block;
+            padding: 8px 14px;
+            background: #eef2f6;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .index-grid a:hover {
+            background: #1e3a5f;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .project {
+            background: #fff;
+            border-radius: 14px;
+            padding: 25px 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border-left: 6px solid #1e3a5f;
+            transition: 0.2s;
+        }
+        .project:hover {
+            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+        }
+        .project h2 {
+            font-size: 1.6rem;
+            color: #0f172a;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .project .badge {
+            font-size: 0.75rem;
+            background: #dbeafe;
+            color: #1e3a5f;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .project .enunciado {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 12px 0 16px 0;
+            border-left: 4px solid #3b82f6;
+            font-style: italic;
+            color: #334155;
+        }
+        .project .enunciado strong {
+            color: #0f172a;
+        }
+        .section-title {
+            font-weight: 700;
+            color: #0f172a;
+            margin: 18px 0 8px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .icon {
+            font-size: 1.2rem;
+        }
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 18px 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Courier New', monospace;
+            line-height: 1.6;
+            margin: 10px 0 6px 0;
+            max-height: 420px;
+            overflow-y: auto;
+            border: 1px solid #1e293b;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        pre .comment { color: #94a3b8; }
+        pre .keyword { color: #f472b6; }
+        pre .string { color: #a3e635; }
+        pre .function { color: #60a5fa; }
+        pre .number { color: #fbbf24; }
+        .justificacion, .buenas-practicas {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #64748b;
+        }
+        .justificacion strong, .buenas-practicas strong {
+            color: #0f172a;
+        }
+        .buenas-practicas {
+            border-left-color: #22c55e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+        table th {
+            background: #1e293b;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+        }
+        table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        table tr:hover {
+            background: #f1f5f9;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #dbeafe;
+            color: #1e3a5f;
+            margin-right: 4px;
+        }
+        .tag-green { background: #dcfce7; color: #166534; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
+        .tag-yellow { background: #fef9c3; color: #854d0e; }
+        .hr-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+            margin: 25px 0 10px 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px 0 10px 0;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 20px;
+        }
+        @media (max-width: 700px) {
+            h1 { font-size: 1.6rem; padding: 20px; flex-wrap: wrap; }
+            .project { padding: 18px 16px; }
+            pre { font-size: 0.75rem; padding: 12px; }
+            .index-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>
+        📚 Proyectos SQL Server
+        <small>GradosTitulos · 10 proyectos completos</small>
+    </h1>
+
+    <!-- Índice rápido -->
+    <div class="index-grid">
+        <a href="#p1">1. Archivos físicos</a>
+        <a href="#p2">2. Configuración y colación</a>
+        <a href="#p3">3. Modelos y respaldos</a>
+        <a href="#p4">4. Roles y usuarios</a>
+        <a href="#p5">5. Permisos granulares</a>
+        <a href="#p6">6. Rendimiento y bloqueos</a>
+        <a href="#p7">7. Automatización (Jobs)</a>
+        <a href="#p8">8. Reestructuración de tablas</a>
+        <a href="#p9">9. Triggers de auditoría</a>
+        <a href="#p10">10. Recuperación y DBCC</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 1 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p1">
+        <h2>📁 Proyecto 1: Archivos físicos y Filegroups <span class="badge">Creación</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Crea la base de datos <strong>GradosTitulos</strong> con archivo primario, secundario para documentos históricos y log de transacciones. Agrega un Filegroup <em>IdxGroup</em> para índices no agrupados y consulta el espacio disponible por Filegroup.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Creación física distribuida</span>
+CREATE DATABASE GradosTitulos
+ON PRIMARY (
+    NAME = GradosTitulos_Data,
+    FILENAME = 'D:\BaseDatos2026\GradosTitulos_data.mdf',
+    SIZE = 20MB, MAXSIZE = 20GB, FILEGROWTH = 5MB
+),
+FILEGROUP DocumentosGroup (
+    NAME = GradosTitulos_DocData,
+    FILENAME = 'D:\BaseDatos2026\GradosTitulos_docdata.ndf',
+    SIZE = 10MB, MAXSIZE = 10GB, FILEGROWTH = 2MB
+)
+LOG ON (
+    NAME = GradosTitulos_Log,
+    FILENAME = 'D:\BaseDatos2026\GradosTitulos_log.ldf',
+    SIZE = 6MB, MAXSIZE = 2GB, FILEGROWTH = 2MB
+);
+<span class="comment">-- Agregar Filegroup IdxGroup</span>
+ALTER DATABASE GradosTitulos ADD FILEGROUP IdxGroup;
+ALTER DATABASE GradosTitulos ADD FILE (
+    NAME = GradosTitulos_Idx,
+    FILENAME = 'D:\BaseDatos2026\GradosTitulos_idx.ndf',
+    SIZE = 10MB, MAXSIZE = 5GB, FILEGROWTH = 2MB
+) TO FILEGROUP IdxGroup;
+<span class="comment">-- Consulta de espacio disponible</span>
+SELECT df.name AS NombreLogico, df.physical_name AS RutaFisica,
+       df.type_desc AS TipoArchivo, ISNULL(fg.name, 'PRIMARY') AS GrupoArchivos,
+       CAST(df.size * 8.0 / 1024.0 AS DECIMAL(10,2)) AS Total_MB,
+       CAST((df.size - FILEPROPERTY(df.name, 'SpaceUsed')) * 8.0 / 1024.0 AS DECIMAL(10,2)) AS EspacioLibre_MB
+FROM sys.database_files df
+LEFT JOIN sys.filegroups fg ON df.data_space_id = fg.data_space_id;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> La separación en tres Filegroups (<em>PRIMARY</em>, <em>DocumentosGroup</em>, <em>IdxGroup</em>) optimiza el rendimiento de E/S al distribuir datos, documentos e índices en diferentes discos. El crecimiento fijo en MB evita fragmentación física. <code>FILEPROPERTY</code> permite calcular espacio libre sin escanear datos.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Validación previa con <code>IF EXISTS</code>, <code>SINGLE_USER WITH ROLLBACK</code> para recreación limpia, nomenclatura estándar (<code>_data.mdf</code>, <code>_idx.ndf</code>, <code>_log.ldf</code>), consultas con vistas de sistema (<code>sys.database_files</code>, <code>sys.filegroups</code>).
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 2 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p2">
+        <h2>⚙️ Proyecto 2: Configuración y colación <span class="badge">Ajustes</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Consulta las propiedades de colación actuales. Modifica la colación a <em>Latin1_General_CI_AI</em> para soporte nativo de español (tildes y Ñ). Ajusta el crecimiento del archivo primario a 20 MB fijos. Eleva el nivel de compatibilidad a 150 (SQL Server 2019) y activa <code>PAGE_VERIFY CHECKSUM</code>.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Ver colación actual</span>
+SELECT name, collation_name, compatibility_level
+FROM sys.databases WHERE name = 'GradosTitulos';
+
+<span class="comment">-- Cambiar colación (requiere SINGLE_USER)</span>
+ALTER DATABASE GradosTitulos SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+ALTER DATABASE GradosTitulos COLLATE Latin1_General_CI_AI;
+ALTER DATABASE GradosTitulos SET MULTI_USER;
+
+<span class="comment">-- Ajustar crecimiento a 20MB fijos</span>
+ALTER DATABASE GradosTitulos
+MODIFY FILE (NAME = GradosTitulos_Data, FILEGROWTH = 20MB);
+
+<span class="comment">-- Nivel de compatibilidad 150 (SQL Server 2019)</span>
+ALTER DATABASE GradosTitulos SET COMPATIBILITY_LEVEL = 150;
+
+<span class="comment">-- Activar PAGE_VERIFY CHECKSUM</span>
+ALTER DATABASE GradosTitulos SET PAGE_VERIFY CHECKSUM;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> La colación <code>Latin1_General_CI_AI</code> (Case-Insensitive, Accent-Insensitive) trata 'á' y 'a' como equivalentes en búsquedas. El nivel 150 habilita <em>Intelligent Query Processing</em> (Batch Mode, UDF Inlining). <code>CHECKSUM</code> detecta corrupción física en páginas de datos.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Uso de <code>SINGLE_USER</code> para cambios críticos, restauración a <code>MULTI_USER</code>, verificación post-cambio con <code>sys.databases</code>, documentación de versiones SQL Server.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 3 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p3">
+        <h2>💾 Proyecto 3: Modelos de recuperación y respaldos <span class="badge">Backup</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Cambia secuencialmente el modelo de recuperación a <em>SIMPLE</em>, <em>BULK_LOGGED</em> y <em>FULL</em>. Ejecuta un backup completo, un backup diferencial y un backup del log de transacciones.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Cambiar modelos</span>
+ALTER DATABASE GradosTitulos SET RECOVERY SIMPLE;
+ALTER DATABASE GradosTitulos SET RECOVERY BULK_LOGGED;
+ALTER DATABASE GradosTitulos SET RECOVERY FULL;
+
+<span class="comment">-- Backup completo</span>
+BACKUP DATABASE GradosTitulos
+TO DISK = 'D:\Backups\GradosTitulos_Full.bak'
+WITH NAME = 'GradosTitulos-BackupCompleto', COMPRESSION, INIT, STATS = 10;
+
+<span class="comment">-- Backup diferencial</span>
+BACKUP DATABASE GradosTitulos
+TO DISK = 'D:\Backups\GradosTitulos_Diff.bak'
+WITH NAME = 'GradosTitulos-BackupDiferencial', DIFFERENTIAL, COMPRESSION, INIT;
+
+<span class="comment">-- Backup del log</span>
+BACKUP LOG GradosTitulos
+TO DISK = 'D:\Backups\GradosTitulos_Log.trn'
+WITH NAME = 'GradosTitulos-BackupLog', COMPRESSION, INIT;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> <em>SIMPLE</em> trunca log automáticamente (sin point-in-time). <em>BULK_LOGGED</em> minimiza logging en operaciones masivas. <em>FULL</em> permite restauración hasta un minuto exacto. El backup diferencial captura solo cambios desde el último full, reduciendo tamaño y tiempo.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Compresión de backups (<code>COMPRESSION</code>), inicialización con <code>INIT</code>, estadísticas de progreso (<code>STATS</code>), verificación en <code>msdb.dbo.backupset</code>, monitoreo de log con <code>DBCC SQLPERF(LOGSPACE)</code>.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 4 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p4">
+        <h2>🔐 Proyecto 4: Roles y usuarios <span class="badge">Seguridad</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Crea logins <em>VendedorQhatu</em> y <em>ConsultaCliente</em>, renombrándolos como <em>OperadorTramite</em> y <em>AuditorSenedu</em>. Asigna <em>db_datawriter</em> y <em>db_datareader</em>. Crea un rol personalizado <em>RolSecretariaAcademica</em> con permisos SELECT en esquemas y INSERT en <em>Tramite.Tramite</em>. Aplica <code>DENY</code> en <em>Tramite.Pago</em> para <em>OperadorTramite</em>.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Crear logins</span>
+CREATE LOGIN VendedorQhatu WITH PASSWORD = 'Operador2026!', DEFAULT_DATABASE = GradosTitulos;
+CREATE LOGIN ConsultaCliente WITH PASSWORD = 'Auditor2026!', DEFAULT_DATABASE = GradosTitulos;
+
+<span class="comment">-- Usuarios renombrados</span>
+CREATE USER OperadorTramite FOR LOGIN VendedorQhatu;
+CREATE USER AuditorSenedu FOR LOGIN ConsultaCliente;
+
+<span class="comment">-- Roles integrados</span>
+ALTER ROLE db_datawriter ADD MEMBER OperadorTramite;
+ALTER ROLE db_datareader ADD MEMBER AuditorSenedu;
+
+<span class="comment">-- Rol personalizado</span>
+CREATE ROLE RolSecretariaAcademica;
+GRANT SELECT ON SCHEMA::Academico TO RolSecretariaAcademica;
+GRANT SELECT ON SCHEMA::Tramite TO RolSecretariaAcademica;
+GRANT INSERT ON Tramite.Tramite TO RolSecretariaAcademica;
+
+<span class="comment">-- DENY explícito en Pago (prevalece sobre db_datawriter)</span>
+DENY SELECT, INSERT, UPDATE, DELETE ON Tramite.Pago TO OperadorTramite;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> El renombrado permite nombres institucionales manteniendo logins originales. <code>DENY</code> prevalece sobre <code>GRANT</code> de <code>db_datawriter</code>, garantizando protección de datos financieros. Los permisos a nivel de esquema simplifican administración futura.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Política de contraseñas (<code>CHECK_POLICY = ON</code>), principio de mínimo privilegio, verificación con <code>sys.database_permissions</code>, separación de logins (servidor) vs usuarios (base de datos).
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 5 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p5">
+        <h2>🎯 Proyecto 5: Permisos granulares <span class="badge">Columnas y EXECUTE</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Concede a <em>CoordinadorFacultad</em> (renombrado de <em>GerenteQhatu</em>) SELECT en <em>Evaluation.V_NotaFinalSustentacion</em>. Revoca UPDATE en <em>Tramite.Pago</em> a <em>AsistenteTramite</em>. Concede a <em>PracticanteSistemas</em> SELECT solo en columnas <em>IdPersona, Nombres, ApellidoPaterno, Correo</em> de <em>Academico.Persona</em>. Concede EXECUTE en <em>Tramite.SP_RegistrarTramite</em> a <em>OperadorTramite</em>.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Permisos específicos</span>
+GRANT SELECT ON Evaluation.V_NotaFinalSustentacion TO CoordinadorFacultad;
+REVOKE UPDATE ON Tramite.Pago TO AsistenteTramite;
+
+<span class="comment">-- Permisos a nivel de columnas (protección de datos sensibles)</span>
+GRANT SELECT (IdPersona, Nombres, ApellidoPaterno, Correo) ON Academico.Persona TO PracticanteSistemas;
+
+<span class="comment">-- Permiso EXECUTE en procedimiento</span>
+GRANT EXECUTE ON Tramite.SP_RegistrarTramite TO OperadorTramite;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> Los permisos a nivel de columna ocultan datos sensibles (DNI, teléfono, dirección) cumpliendo normativas de privacidad. <code>EXECUTE</code> permite operaciones sin acceso directo a tablas, encapsulando lógica de negocio y garantizando consistencia.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> <code>REVOKE</code> vs <code>DENY</code> (revoco permisos existentes, no bloqueo explícito), encapsulamiento con procedimientos almacenados, verificación con <code>sys.database_permissions</code>.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 6 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p6">
+        <h2>📊 Proyecto 6: Rendimiento y bloqueos <span class="badge">DMVs</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Describe indicadores clave del Activity Monitor. Desarrolla consultas con DMVs para rastrear bloqueos en tiempo real. Identifica las 5 consultas con mayor consumo de CPU. Verifica el uso real de índices no agrupados y detecta índices sin uso.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Bloqueos en tiempo real</span>
+SELECT session_id, blocking_session_id, wait_type, wait_time, wait_resource
+FROM sys.dm_exec_requests
+WHERE blocking_session_id > 0;
+
+<span class="comment">-- Top 5 consultas por CPU</span>
+SELECT TOP 5
+    qs.total_worker_time / 1000000 AS CPU_Segundos,
+    qs.execution_count AS Ejecuciones,
+    SUBSTRING(st.text, (qs.statement_start_offset/2)+1,
+        ((CASE qs.statement_end_offset WHEN -1 THEN DATALENGTH(st.text)
+         ELSE qs.statement_end_offset END - qs.statement_start_offset)/2)+1) AS Consulta
+FROM sys.dm_exec_query_stats qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) st
+WHERE DB_NAME(st.dbid) = 'GradosTitulos'
+ORDER BY qs.total_worker_time DESC;
+
+<span class="comment">-- Índices sin uso</span>
+SELECT OBJECT_NAME(s.object_id) AS Tabla, i.name AS Indice,
+       s.user_seeks, s.user_scans, s.user_updates,
+       CASE WHEN (s.user_seeks + s.user_scans + s.user_lookups) = 0
+            THEN '❌ SIN USO' ELSE '✅ UTILIZADO' END AS Estado
+FROM sys.dm_db_index_usage_stats s
+INNER JOIN sys.indexes i ON s.object_id = i.object_id AND s.index_id = i.index_id
+WHERE i.type_desc = 'NONCLUSTERED';
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> <code>sys.dm_exec_requests</code> muestra bloqueos activos. <code>sys.dm_exec_query_stats</code> almacena estadísticas de consultas en caché. <code>sys.dm_db_index_usage_stats</code> registra operaciones de búsqueda, escaneo y actualizaciones por índice.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Filtrado de procesos del sistema (<code>session_id > 50</code>), exclusión de esperas inofensivas, uso de <code>CROSS APPLY</code> para obtener texto y plan de ejecución, recomendaciones automáticas basadas en ratios de uso.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 7 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p7">
+        <h2>🤖 Proyecto 7: Automatización (Jobs) <span class="badge">SQL Agent</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Diseña scripts para automatizar tareas con SQL Server Agent: backup diario completo, limpieza semanal de auditoría (>15 días y resueltos). Configura el operador <em>DBA_Alertas</em> con notificaciones por email. Crea un job para reconstrucción de índices con fragmentación >30%.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Crear operador DBA_Alertas</span>
+EXEC msdb.dbo.sp_add_operator
+    @name = N'DBA_Alertas',
+    @email_address = N'dba@universidad.edu';
+
+<span class="comment">-- Job: Backup Diario (23:00)</span>
+EXEC msdb.dbo.sp_add_job @job_name = N'BackupDiario_GradosTitulos';
+EXEC msdb.dbo.sp_add_jobstep @job_name = N'BackupDiario_GradosTitulos',
+    @step_name = N'EjecutarBackup',
+    @command = N'EXEC GradosTitulos.dbo.SP_BackupDiario_GradosTitulos;';
+EXEC msdb.dbo.sp_add_jobschedule @job_name = N'BackupDiario_GradosTitulos',
+    @name = N'Diario_2300', @freq_type = 4, @active_start_time = 230000;
+EXEC msdb.dbo.sp_update_job @job_name = N'BackupDiario_GradosTitulos',
+    @notify_level_email = 2, @notify_email_operator_name = N'DBA_Alertas';
+
+<span class="comment">-- Job: Reconstrucción de índices (sábado 02:00)</span>
+-- Similar con @freq_interval = 64 (sábado), @active_start_time = 020000
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> Los Jobs programan tareas rutinarias sin intervención manual. <code>Database Mail</code> envía notificaciones en fallos. <code>ALTER INDEX REBUILD WITH ONLINE = ON</code> reconstruye índices sin bloqueos. El umbral del 30% de fragmentación equilibra rendimiento y costo de mantenimiento.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Nombres dinámicos en backups (con fecha/hora), compresión de backups, transaccionalidad en limpieza, reintentos en jobs (<code>retry_attempts</code>), horarios estratégicos (fuera de horario laboral), verificación de existencia con <code>IF NOT EXISTS</code>.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 8 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p8">
+        <h2>🏗️ Proyecto 8: Reestructuración de tablas <span class="badge">ALTER</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Agrega la columna <em>PrioridadAtencion</em> (INT) a <em>Tramite.Tramite</em>. Elimina la columna redundante <em>Observaciones</em>. Agrega CHECK CONSTRAINT (<code>Monto > 0</code>) en <em>Tramite.Pago</em>. Modifica <em>NroRecibo</em> de VARCHAR(30) a VARCHAR(60) manteniendo NULL permitido.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Agregar columna con valor por defecto</span>
+ALTER TABLE Tramite.Tramite
+ADD PrioridadAtencion INT NULL CONSTRAINT DF_Tramite_PrioridadAtencion DEFAULT 3 WITH VALUES;
+
+<span class="comment">-- Eliminar columna redundante</span>
+ALTER TABLE Tramite.Tramite DROP COLUMN Observaciones;
+
+<span class="comment">-- CHECK CONSTRAINT para Monto positivo</span>
+ALTER TABLE Tramite.Pago
+ADD CONSTRAINT CK_Pago_MontoPositivo CHECK (Monto > 0);
+
+<span class="comment">-- Modificar tipo de datos (expansión segura)</span>
+ALTER TABLE Tramite.Pago ALTER COLUMN NroRecibo VARCHAR(60) NULL;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> <code>WITH VALUES</code> asigna el default a registros existentes. <code>DROP COLUMN</code> es irreversible. <code>CHECK CONSTRAINT</code> impide montos negativos/cero. La expansión de <code>VARCHAR</code> es segura (no hay pérdida de datos).
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Verificación de existencia con <code>IF EXISTS</code>/<code>INFORMATION_SCHEMA</code>, uso de <code>DEFAULT</code> con <code>WITH VALUES</code>, pruebas de validación con <code>TRY...CATCH</code>, documentación de cambios.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 9 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p9">
+        <h2>🕵️ Proyecto 9: Triggers de auditoría <span class="badge">Forensic</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Crea <em>Academico.AuditoriaPersona</em> y un trigger <code>AFTER DELETE</code> que capture datos eliminados, usuario y fecha. Crea <code>TR_Auditoria_ModificarPago</code> (<code>AFTER UPDATE</code>) que registre valores anteriores/nuevos de <em>Monto</em>. Crea un trigger <code>INSTEAD OF DELETE, UPDATE</code> en <em>Academico.Docente</em> que bloquee operaciones en fines de semana.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Trigger DELETE en Persona</span>
+CREATE TRIGGER TR_Auditoria_DeletePersona ON Academico.Persona
+AFTER DELETE
+AS
+BEGIN
+    INSERT INTO Academico.AuditoriaPersona (IdPersona, DNI, Nombres, ApellidoPaterno, ...)
+    SELECT IdPersona, DNI, Nombres, ApellidoPaterno, ..., SUSER_SNAME(), GETDATE()
+    FROM deleted;
+END
+
+<span class="comment">-- Trigger UPDATE en Pago</span>
+CREATE TRIGGER TR_Auditoria_ModificarPago ON Tramite.Pago
+AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO Tramite.AuditoriaPago (IdPago, Monto_Anterior, Monto_Nuevo, Usuario)
+    SELECT d.IdPago, d.Monto, i.Monto, SUSER_SNAME()
+    FROM inserted i INNER JOIN deleted d ON i.IdPago = d.IdPago    WHERE i.Monto != d.Monto;
+END
+
+<span class="comment">-- Trigger INSTEAD OF para control de horarios</span>
+CREATE TRIGGER TR_Seguridad_HorariosDocente ON Academico.Docente
+INSTEAD OF DELETE, UPDATE
+AS
+BEGIN
+    IF DATEPART(WEEKDAY, GETDATE()) IN (6, 7)  -- Sábado o Domingo
+    BEGIN
+        RAISERROR('Operación bloqueada en fin de semana', 16, 1);
+        ROLLBACK;
+        RETURN;
+    END
+    -- Ejecutar operación manualmente si es día hábil
+END
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> <code>AFTER DELETE</code> captura datos eliminados usando la tabla lógica <code>deleted</code>. <code>AFTER UPDATE</code> compara <code>inserted</code> y <code>deleted</code> para registrar solo cambios reales. <code>INSTEAD OF</code> intercepta operaciones y permite control granular (ej. horarios).
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> <code>SET NOCOUNT ON</code> en triggers, captura de metadatos (<code>SUSER_SNAME()</code>, <code>GETDATE()</code>, IP de origen), validación de cambios reales (evita registros innecesarios), <code>RAISERROR</code> con <code>ROLLBACK</code> para seguridad.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROYECTO 10 -->
+    <!-- ============================================================ -->
+    <div class="project" id="p10">
+        <h2>🚨 Proyecto 10: Recuperación y DBCC <span class="badge">Disaster Recovery</span></h2>
+        <div class="enunciado">
+            <strong>Enunciado:</strong> Simula el borrado accidental de <em>Catalogo.EstadoTramite</em>. Restaura la base completa desde backup. Luego, recupera solo los datos de catálogo desde una base auxiliar (<em>GradosTitulos_Auxiliar</em>) usando <em>Cross-Database Queries</em>. Ejecuta <code>DBCC CHECKDB</code> para validar integridad física.
+        </div>
+
+        <div class="section-title"><span class="icon">📜</span> Script T-SQL (resumen)</div>
+        <pre>
+<span class="comment">-- Simular desastre</span>
+DELETE FROM Catalogo.EstadoTramite;
+
+<span class="comment">-- Restauración completa</span>
+ALTER DATABASE GradosTitulos SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+RESTORE DATABASE GradosTitulos FROM DISK = 'D:\Backups\GradosTitulos_Full.bak' WITH REPLACE, STATS = 10;
+ALTER DATABASE GradosTitulos SET MULTI_USER;
+
+<span class="comment">-- Recuperación parcial (Cross-Database)</span>
+INSERT INTO Catalogo.EstadoTramite (Codigo, Nombre, Descripcion, Orden)
+SELECT Codigo, Nombre, Descripcion, Orden
+FROM GradosTitulos_Auxiliar.Catalogo.EstadoTramite;
+
+<span class="comment">-- Verificación de integridad</span>
+DBCC CHECKDB('GradosTitulos') WITH NO_INFOMSGS, DATA_PURITY, EXTENDED_LOGICAL_CHECKS;
+        </pre>
+
+        <div class="justificacion">
+            <strong>🔍 Justificación técnica:</strong> <code>RESTORE WITH REPLACE</code> sobrescribe la base existente. <em>Cross-Database Queries</em> permiten recuperación selectiva sin perder transacciones del día. <code>DBCC CHECKDB</code> audita integridad física (páginas, índices, integridad lógica). <code>DATA_PURITY</code> valida valores de columnas.
+        </div>
+        <div class="buenas-practicas">
+            <strong>✅ Buenas prácticas:</strong> Backup previo al desastre, <code>SINGLE_USER</code> durante restauración, <code>STATS</code> para monitoreo de progreso, verificación de consistencia post-restauración, estrategias múltiples de recuperación (completa y parcial).
+        </div>
+    </div>
+
+    <hr class="hr-divider" />
+
+    <!-- ============================================================ -->
+    <!-- TABLA RESUMEN GENERAL -->
+    <!-- ============================================================ -->
+    <div style="background:#fff; border-radius:14px; padding:20px 28px; box-shadow:0 2px 12px rgba(0,0,0,0.06); margin-top:10px;">
+        <h2 style="margin-bottom:16px;">📋 Resumen general de proyectos</h2>
+        <table>
+            <thead>
+                <tr><th>#</th><th>Proyecto</th><th>Temas principales</th><th>Tecnologías / Objetos</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Archivos físicos y Filegroups</td><td>Creación DB, .mdf/.ndf/.ldf, Filegroups</td><td><span class="tag">CREATE DATABASE</span><span class="tag">FILEGROUP</span><span class="tag">sys.database_files</span></td></tr>
+                <tr><td>2</td><td>Configuración y colación</td><td>Colación, compatibilidad, PAGE_VERIFY</td><td><span class="tag">ALTER DATABASE</span><span class="tag">COLLATE</span><span class="tag">COMPATIBILITY_LEVEL</span></td></tr>
+                <tr><td>3</td><td>Modelos y respaldos</td><td>SIMPLE/BULK_LOGGED/FULL, backups</td><td><span class="tag">BACKUP</span><span class="tag">DIFFERENTIAL</span><span class="tag">LOG</span></td></tr>
+                <tr><td>4</td><td>Roles y usuarios</td><td>Logins, usuarios, roles, DENY</td><td><span class="tag">CREATE LOGIN</span><span class="tag">ALTER ROLE</span><span class="tag">DENY</span></td></tr>
+                <tr><td>5</td><td>Permisos granulares</td><td>Column-level, EXECUTE, REVOKE</td><td><span class="tag">GRANT SELECT (col)</span><span class="tag">EXECUTE</span></td></tr>
+                <tr><td>6</td><td>Rendimiento y bloqueos</td><td>DMVs, CPU, índices sin uso</td><td><span class="tag">sys.dm_exec_requests</span><span class="tag">sys.dm_db_index_usage_stats</span></td></tr>
+                <tr><td>7</td><td>Automatización (Jobs)</td><td>SQL Agent, jobs, alertas, índices</td><td><span class="tag">sp_add_job</span><span class="tag">Database Mail</span><span class="tag">ALTER INDEX REBUILD</span></td></tr>
+                <tr><td>8</td><td>Reestructuración de tablas</td><td>ADD/DROP columnas, CHECK, ALTER</td><td><span class="tag">ALTER TABLE</span><span class="tag">CHECK CONSTRAINT</span></td></tr>
+                <tr><td>9</td><td>Triggers de auditoría</td><td>AFTER DELETE, AFTER UPDATE, INSTEAD OF</td><td><span class="tag">TRIGGER</span><span class="tag">inserted/deleted</span><span class="tag">RAISERROR</span></td></tr>
+                <tr><td>10</td><td>Recuperación y DBCC</td><td>RESTORE, Cross-Database, DBCC CHECKDB</td><td><span class="tag">RESTORE</span><span class="tag">DBCC CHECKDB</span><span class="tag">Cross-Database Query</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        📚 Proyectos SQL Server · GradosTitulos · 10 proyectos completos con scripts, justificación y buenas prácticas.
+    </div>
+
+</div>
+</body>
+</html>

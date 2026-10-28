@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Seguridad y Auditoría - Grados y Títulos</title>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a2a3a;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .main-header {
+            background: linear-gradient(135deg, #0a1e2f 0%, #1a3a5a 100%);
+            color: #fff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(10, 30, 47, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .main-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-header .header-left i {
+            font-size: 42px;
+            color: #5bc0eb;
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .main-header .subtitle {
+            font-size: 15px;
+            color: #a8c8e8;
+            font-weight: 300;
+            margin-top: 4px;
+        }
+
+        .main-header .badge {
+            background: rgba(91, 192, 235, 0.2);
+            border: 1px solid rgba(91, 192, 235, 0.3);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #5bc0eb;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-header .badge i {
+            font-size: 14px;
+        }
+
+        /* ===== TABS ===== */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+            background: #fff;
+            padding: 12px 16px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            border: none;
+            background: transparent;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #5a6f7e;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn i {
+            font-size: 15px;
+        }
+
+        .tab-btn:hover {
+            background: #e8edf2;
+            color: #1a3a5a;
+        }
+
+        .tab-btn.active {
+            background: #0a1e2f;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(10, 30, 47, 0.25);
+        }
+
+        .tab-btn .count {
+            background: rgba(255,255,255,0.2);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tab-btn.active .count {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* ===== CONTENIDO DE TABS ===== */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TARJETAS DE PROYECTOS ===== */
+        .proyectos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .proyecto-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 24px 26px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid #2c7aa0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .proyecto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(10, 30, 47, 0.12);
+        }
+
+        .proyecto-card .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .proyecto-card .card-header .num {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c7aa0;
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .proyecto-card .card-header .icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .proyecto-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a1e2f;
+            margin-bottom: 8px;
+        }
+
+        .proyecto-card .enunciado {
+            font-size: 14px;
+            color: #3d5567;
+            margin-bottom: 14px;
+            padding-left: 4px;
+            border-left: 3px solid #e0e8ef;
+            padding-left: 12px;
+        }
+
+        .proyecto-card .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .proyecto-card .tech-tags span {
+            background: #eef3f7;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c5a7a;
+            letter-spacing: 0.3px;
+        }
+
+        .proyecto-card .btn-detalle {
+            background: transparent;
+            border: 1.5px solid #2c7aa0;
+            color: #2c7aa0;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .proyecto-card .btn-detalle:hover {
+            background: #2c7aa0;
+            color: #fff;
+        }
+
+        /* ===== SECCIÓN DE DETALLE (expandible) ===== */
+        .detalle-container {
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            display: none;
+        }
+
+        .detalle-container.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .detalle-container .detalle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e8edf2;
+        }
+
+        .detalle-container .detalle-header h2 {
+            font-size: 20px;
+            color: #0a1e2f;
+        }
+
+        .detalle-container .detalle-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #8a9aa8;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+
+        .detalle-container .detalle-header .close-btn:hover {
+            color: #c0392b;
+        }
+
+        .detalle-container pre {
+            background: #0d1a26;
+            color: #d4e6f0;
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.7;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .detalle-container .badge-script {
+            display: inline-block;
+            background: #2c7aa0;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        /* ===== RESUMEN POR TEMA ===== */
+        .tema-resumen {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 5px solid #2c7aa0;
+        }
+
+        .tema-resumen h2 {
+            font-size: 22px;
+            color: #0a1e2f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tema-resumen h2 i {
+            color: #2c7aa0;
+        }
+
+        .tema-resumen .desc {
+            color: #3d5567;
+            margin-top: 6px;
+            font-size: 15px;
+        }
+
+        .tema-resumen .temas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-top: 12px;
+        }
+
+        .tema-resumen .temas-list span {
+            background: #eef3f7;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #1a3a5a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .main-header { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+            .main-header h1 { font-size: 22px; }
+            .main-header .header-left i { font-size: 32px; }
+            .tabs-container { padding: 10px 12px; gap: 4px; }
+            .tab-btn { padding: 8px 14px; font-size: 12px; }
+            .tab-btn .count { display: none; }
+            .proyectos-grid { grid-template-columns: 1fr; }
+            .detalle-container { padding: 16px; }
+            .detalle-container pre { font-size: 12px; padding: 14px; max-height: 350px; }
+            .tema-resumen { padding: 16px 18px; }
+            .tema-resumen h2 { font-size: 18px; }
+        }
+
+        @media (max-width: 480px) {
+            .tab-btn i { display: none; }
+            .tab-btn { padding: 6px 12px; font-size: 11px; }
+            .main-header .badge { font-size: 11px; padding: 4px 12px; }
+        }
+
+        /* Scrollbar personalizado para pre */
+        .detalle-container pre::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .detalle-container pre::-webkit-scrollbar-track {
+            background: #0d1a26;
+        }
+        .detalle-container pre::-webkit-scrollbar-thumb {
+            background: #3d6a8a;
+            border-radius: 8px;
+        }
+        .detalle-container pre::-webkit-scrollbar-thumb:hover {
+            background: #5bc0eb;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6a7f8e;
+            font-size: 13px;
+            border-top: 1px solid #e0e8ef;
+        }
+        .footer i {
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="main-header">
+        <div class="header-left">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+                <h1>Seguridad y Auditoría SQL</h1>
+                <div class="subtitle">Gestión de accesos · Cifrado · Auditoría · Grados y Títulos</div>
+            </div>
+        </div>
+        <div class="badge">
+            <i class="fas fa-database"></i>
+            6 Temas · 18 Proyectos
+        </div>
+    </header>
+
+    <!-- ===== TABS ===== -->
+    <nav class="tabs-container" id="tabsNav">
+        <button class="tab-btn active" data-tab="tab1">
+            <i class="fas fa-user-lock"></i> Tema 1 <span class="count">3</span>
+        </button>
+        <button class="tab-btn" data-tab="tab2">
+            <i class="fas fa-server"></i> Tema 2 <span class="count">3</span>
+        </button>
+        <button class="tab-btn" data-tab="tab3">
+            <i class="fas fa-users-cog"></i> Tema 3 <span class="count">3</span>
+        </button>
+        <button class="tab-btn" data-tab="tab4">
+            <i class="fas fa-ban"></i> Tema 4 <span class="count">3</span>
+        </button>
+        <button class="tab-btn" data-tab="tab5">
+            <i class="fas fa-lock"></i> Tema 5 <span class="count">3</span>
+        </button>
+        <button class="tab-btn" data-tab="tab6">
+            <i class="fas fa-clipboard-list"></i> Tema 6 <span class="count">3</span>
+        </button>
+    </nav>
+
+    <!-- ===== CONTENIDO ===== -->
+    <!-- TEMA 1 -->
+    <div class="tab-content active" id="tab1">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-user-lock"></i> Tema 1. Autenticación SQL y Windows</h2>
+            <p class="desc">Diferencias entre autenticación Windows y SQL Server. Implementación de acceso mixto para personal académico, administrativo y consultores externos. Gestión de accesos para jurados de tesis.</p>
+            <div class="temas-list">
+                <span>🔐 Autenticación mixta</span>
+                <span>👥 Roles Windows</span>
+                <span>🔑 Logins SQL</span>
+                <span>📋 Políticas de contraseña</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="1" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-user-tie"></i></span>
+                </div>
+                <h3>Acceso mixto para personal académico y administrativo</h3>
+                <div class="enunciado">Personal interno con autenticación Windows, consultores externos con autenticación SQL Server.</div>
+                <div class="tech-tags"><span>Windows Auth</span><span>SQL Auth</span><span>Roles</span></div>
+                <button class="btn-detalle" data-tema="1" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="1" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-gavel"></i></span>
+                </div>
+                <h3>Gestión de accesos para miembros del Jurado de Tesis</h3>
+                <div class="enunciado">Acceso diferenciado a información de tesis y sustentaciones con autenticación Windows y SQL.</div>
+                <div class="tech-tags"><span>Jurados</span><span>Permisos</span><span>Vistas</span></div>
+                <button class="btn-detalle" data-tema="1" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="1" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-shield-virus"></i></span>
+                </div>
+                <h3>Políticas estrictas para cuentas SQL Server</h3>
+                <div class="enunciado">Aplicación de políticas de contraseña, expiración y bloqueo para cuentas de administración.</div>
+                <div class="tech-tags"><span>CHECK_POLICY</span><span>Expiración</span><span>Auditoría</span></div>
+                <button class="btn-detalle" data-tema="1" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMA 2 -->
+    <div class="tab-content" id="tab2">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-server"></i> Tema 2. Cuentas de servicio y configuración del servidor</h2>
+            <p class="desc">Configuración segura de cuentas de servicio para SQL Server y SQL Server Agent. Monitoreo de servicios críticos y configuración de protocolos de red seguros.</p>
+            <div class="temas-list">
+                <span>⚙️ Cuentas de servicio</span>
+                <span>📊 Monitoreo DMV</span>
+                <span>🔒 Protocolos seguros</span>
+                <span>📡 SSL/TLS</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="2" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-cogs"></i></span>
+                </div>
+                <h3>Configuración segura de servicios SQL Server</h3>
+                <div class="enunciado">Cuentas de servicio específicas para SQL Server Database Engine y SQL Server Agent.</div>
+                <div class="tech-tags"><span>Service Accounts</span><span>Privilegios mínimos</span></div>
+                <button class="btn-detalle" data-tema="2" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="2" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-chart-line"></i></span>
+                </div>
+                <h3>Monitoreo de servicios críticos del servidor</h3>
+                <div class="enunciado">Consultas administrativas para verificar el estado de instancias SQL Server.</div>
+                <div class="tech-tags"><span>DMV</span><span>sys.dm_server_services</span><span>Monitoreo</span></div>
+                <button class="btn-detalle" data-tema="2" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="2" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-network-wired"></i></span>
+                </div>
+                <h3>Configuración de protocolos de red seguros</h3>
+                <div class="enunciado">Conexiones seguras con TCP/IP, SSL/TLS y cifrado forzado.</div>
+                <div class="tech-tags"><span>TCP/IP</span><span>SSL</span><span>ForceEncryption</span></div>
+                <button class="btn-detalle" data-tema="2" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMA 3 -->
+    <div class="tab-content" id="tab3">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-users-cog"></i> Tema 3. Creación de roles fijos y personalizados</h2>
+            <p class="desc">Diseño de roles personalizados para la gestión de esquemas (Catálogo, Académico, Trámite, Evaluación, Documento). Roles para evaluadores y jerarquías de operador, supervisor y administrador.</p>
+            <div class="temas-list">
+                <span>👤 Roles personalizados</span>
+                <span>📁 Esquemas</span>
+                <span>🔗 Herencia de roles</span>
+                <span>📋 RBAC</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="3" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-sitemap"></i></span>
+                </div>
+                <h3>Roles para el proceso de grados y títulos</h3>
+                <div class="enunciado">Roles personalizados para gestionar acceso a esquemas: Catálogo, Académico, Trámite, Evaluación, Documento.</div>
+                <div class="tech-tags"><span>Esquemas</span><span>Roles</span><span>Permisos</span></div>
+                <button class="btn-detalle" data-tema="3" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="3" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-user-graduate"></i></span>
+                </div>
+                <h3>Roles para evaluadores de tesis</h3>
+                <div class="enunciado">Evaluadores pueden consultar tesis y registrar observaciones sin modificar información académica.</div>
+                <div class="tech-tags"><span>Evaluadores</span><span>Vistas restringidas</span><span>Procedimientos</span></div>
+                <button class="btn-detalle" data-tema="3" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="3" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-level-up-alt"></i></span>
+                </div>
+                <h3>Administración de roles jerárquicos</h3>
+                <div class="enunciado">Roles jerárquicos: Operador → Supervisor → Administrador con herencia de permisos.</div>
+                <div class="tech-tags"><span>Jerarquía</span><span>Herencia</span><span>Dashboards</span></div>
+                <button class="btn-detalle" data-tema="3" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMA 4 -->
+    <div class="tab-content" id="tab4">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-ban"></i> Tema 4. Control de acceso mediante GRANT, DENY y REVOKE</h2>
+            <p class="desc">Control granular de permisos: operadores con solo lectura, restricción de modificación de documentos oficiales, y revocación de permisos temporales para auditores.</p>
+            <div class="temas-list">
+                <span>✅ GRANT</span>
+                <span>⛔ DENY</span>
+                <span>↩️ REVOKE</span>
+                <span>⏳ Acceso temporal</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="4" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-eye"></i></span>
+                </div>
+                <h3>Operadores con solo consulta de estudiantes</h3>
+                <div class="enunciado">Operadores pueden consultar datos de estudiantes, pero no modificarlos (GRANT SELECT, DENY INSERT/UPDATE/DELETE).</div>
+                <div class="tech-tags"><span>GRANT</span><span>DENY</span><span>SELECT</span></div>
+                <button class="btn-detalle" data-tema="4" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="4" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-file-signature"></i></span>
+                </div>
+                <h3>Restricción de acceso a resoluciones y diplomas</h3>
+                <div class="enunciado">Solo la Oficina de Grados y Títulos puede modificar documentos oficiales.</div>
+                <div class="tech-tags"><span>Documentos oficiales</span><span>CONTROL</span><span>Vistas</span></div>
+                <button class="btn-detalle" data-tema="4" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="4" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-clock"></i></span>
+                </div>
+                <h3>Revocación de permisos temporales</h3>
+                <div class="enunciado">Auditor externo requiere acceso temporal durante una semana con revocación automática.</div>
+                <div class="tech-tags"><span>REVOKE</span><span>Acceso temporal</span><span>Triggers</span></div>
+                <button class="btn-detalle" data-tema="4" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMA 5 -->
+    <div class="tab-content" id="tab5">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-lock"></i> Tema 5. Cifrado y protección de datos (TDE y Always Encrypted)</h2>
+            <p class="desc">Implementación de Transparent Data Encryption (TDE) para archivos físicos. Protección de datos personales con Always Encrypted: DNI, correo, teléfono de estudiantes, asesores y jurados.</p>
+            <div class="temas-list">
+                <span>🔐 TDE</span>
+                <span>🔑 Always Encrypted</span>
+                <span>📋 Deterministico</span>
+                <span>🎲 Aleatorio</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="5" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-database"></i></span>
+                </div>
+                <h3>Implementación de TDE para GradosTitulos</h3>
+                <div class="enunciado">Protección de archivos físicos (MDF, LDF) mediante Transparent Data Encryption con certificado y DEK.</div>
+                <div class="tech-tags"><span>TDE</span><span>Certificado</span><span>AES-256</span></div>
+                <button class="btn-detalle" data-tema="5" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="5" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-id-card"></i></span>
+                </div>
+                <h3>Protección de datos personales del tesista</h3>
+                <div class="enunciado">Always Encrypted para DNI, correo y teléfono de estudiantes (deterministico y aleatorio).</div>
+                <div class="tech-tags"><span>Always Encrypted</span><span>CMK/CEK</span><span>PII</span></div>
+                <button class="btn-detalle" data-tema="5" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="5" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-user-shield"></i></span>
+                </div>
+                <h3>Cifrado de información de jurados y asesores</h3>
+                <div class="enunciado">Protección de datos personales de asesores y jurados de tesis con Always Encrypted.</div>
+                <div class="tech-tags"><span>Jurados</span><span>Asesores</span><span>Vistas anonimizadas</span></div>
+                <button class="btn-detalle" data-tema="5" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMA 6 -->
+    <div class="tab-content" id="tab6">
+        <div class="tema-resumen">
+            <h2><i class="fas fa-clipboard-list"></i> Tema 6. Auditoría y monitoreo de eventos</h2>
+            <p class="desc">SQL Server Audit para registrar accesos, modificaciones en trámites, y sistema integral de auditoría que cubre logins, cambios de permisos, creación de usuarios, eliminación de objetos y modificaciones de datos críticos.</p>
+            <div class="temas-list">
+                <span>📋 SQL Server Audit</span>
+                <span>🔍 Triggers DDL/DML</span>
+                <span>📊 Reportes</span>
+                <span>🚨 Alertas</span>
+            </div>
+        </div>
+        <div class="proyectos-grid">
+            <div class="proyecto-card" data-tema="6" data-proyecto="1">
+                <div class="card-header">
+                    <span class="num">01</span>
+                    <span class="icon" style="background:#2c7aa0;"><i class="fas fa-sign-in-alt"></i></span>
+                </div>
+                <h3>Auditoría de accesos a la base de datos</h3>
+                <div class="enunciado">Registro de todos los accesos (logins exitosos y fallidos) a GradosTitulos con SQL Server Audit.</div>
+                <div class="tech-tags"><span>LOGIN_GROUP</span><span>Archivos .sqlaudit</span><span>Vistas</span></div>
+                <button class="btn-detalle" data-tema="6" data-proyecto="1">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="6" data-proyecto="2">
+                <div class="card-header">
+                    <span class="num">02</span>
+                    <span class="icon" style="background:#1a5a7a;"><i class="fas fa-edit"></i></span>
+                </div>
+                <h3>Auditoría de modificaciones en trámites académicos</h3>
+                <div class="enunciado">Registro de INSERT, UPDATE y DELETE en tablas del esquema Tramite con triggers y SQL Server Audit.</div>
+                <div class="tech-tags"><span>Triggers</span><span>Historial</span><span>Alertas</span></div>
+                <button class="btn-detalle" data-tema="6" data-proyecto="2">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="proyecto-card" data-tema="6" data-proyecto="3">
+                <div class="card-header">
+                    <span class="num">03</span>
+                    <span class="icon" style="background:#c0392b;"><i class="fas fa-sitemap"></i></span>
+                </div>
+                <h3>Sistema integral de auditoría institucional</h3>
+                <div class="enunciado">Auditoría de logins, cambios de permisos, creación de usuarios, eliminación de objetos y modificaciones de datos críticos.</div>
+                <div class="tech-tags"><span>BD Auditoría</span><span>Triggers servidor</span><span>Reportes</span></div>
+                <button class="btn-detalle" data-tema="6" data-proyecto="3">Ver Script <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTENEDOR DE DETALLE (Script) ===== -->
+    <div class="detalle-container" id="detalleContainer">
+        <div class="detalle-header">
+            <h2 id="detalleTitulo">Script del Proyecto</h2>
+            <button class="close-btn" id="cerrarDetalle">&times;</button>
+        </div>
+        <div class="badge-script" id="detalleBadge">T-SQL</div>
+        <pre id="detalleScript"><code>-- Cargando script...</code></pre>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        <i class="fas fa-heart"></i> Soluciones de Seguridad SQL · Universidad · Grados y Títulos
+    </div>
+
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+    (function() {
+
+        // --- Datos de los scripts (contenido real de cada proyecto) ---
+        const scripts = {};
+
+        // Función para registrar scripts con su clave "tema-proyecto"
+        function setScript(tema, proyecto, titulo, codigo) {
+            const key = tema + '-' + proyecto;
+            scripts[key] = { titulo, codigo };
+        }
+
+        // ===== TEMA 1 =====
+        setScript(1, 1, 'Proyecto 1.1: Acceso mixto para personal académico y administrativo',
+            `-- ============================================
+-- PASO 1: Verificar modo mixto
+-- ============================================
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'authentication mode';
+-- Valor 2 = modo mixto
+
+-- ============================================
+-- PASO 2: Crear logins Windows (personal interno)
+-- ============================================
+CREATE LOGIN [UNIVERSIDAD\\jperez] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTítulos;
+CREATE LOGIN [UNIVERSIDAD\\mgarcia] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTítulos;
+CREATE LOGIN [UNIVERSIDAD\\grupo_academico] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTítulos;
+
+-- ============================================
+-- PASO 3: Crear logins SQL (consultores externos)
+-- ============================================
+CREATE LOGIN consultor1 WITH PASSWORD = 'C0nsult0r#2025$Seguro!', 
+    CHECK_POLICY = ON, CHECK_EXPIRATION = ON,
+    DEFAULT_DATABASE = GradosTítulos;
+
+CREATE LOGIN consultor2 WITH PASSWORD = 'Ext3rno@2025#Vigente', 
+    CHECK_POLICY = ON, CHECK_EXPIRATION = ON,
+    DEFAULT_DATABASE = GradosTítulos;
+
+-- ============================================
+-- PASO 4: Crear usuarios en la base de datos
+-- ============================================
+USE GradosTítulos;
+GO
+CREATE USER [jperez] FOR LOGIN [UNIVERSIDAD\\jperez];
+CREATE USER consultor1 FOR LOGIN consultor1;
+-- (... repetir para cada usuario)
+
+-- ============================================
+-- PASO 5: Asignar roles y permisos
+-- ============================================
+ALTER ROLE db_datareader ADD MEMBER [jperez];
+GRANT INSERT, UPDATE ON SCHEMA::academico TO [jperez];
+ALTER ROLE db_datareader ADD MEMBER consultor1;
+DENY SELECT ON SCHEMA::personal TO consultor1, consultor2;
+
+-- ============================================
+-- PASO 6: Verificación
+-- ============================================
+SELECT name, type_desc, is_disabled, default_database_name 
+FROM sys.server_principals 
+WHERE type IN ('S', 'U', 'G') AND name NOT LIKE '##%';`);
+
+        setScript(1, 2, 'Proyecto 1.2: Gestión de accesos para miembros del Jurado de Tesis',
+            `-- ============================================
+-- PASO 1: Crear esquema para jurado
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE SCHEMA jurado;
+GO
+
+-- ============================================
+-- PASO 2: Crear logins (mixto)
+-- ============================================
+-- Jurados internos (Windows)
+CREATE LOGIN [UNIVERSIDAD\\lramirez] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTitulos;
+-- Jurados externos (SQL)
+CREATE LOGIN jurado_externo1 WITH PASSWORD = 'Jur@d0#2025$Tesis!',
+    CHECK_POLICY = ON, CHECK_EXPIRATION = ON;
+
+-- ============================================
+-- PASO 3: Crear usuarios y rol personalizado
+-- ============================================
+CREATE USER [lramirez] FOR LOGIN [UNIVERSIDAD\\lramirez];
+CREATE USER jurado_externo1 FOR LOGIN jurado_externo1;
+
+CREATE ROLE rol_jurado;
+GRANT SELECT ON SCHEMA::jurado TO rol_jurado;
+GRANT INSERT, UPDATE ON jurado.Calificaciones TO rol_jurado;
+DENY SELECT ON SCHEMA::personal TO rol_jurado;
+
+ALTER ROLE rol_jurado ADD MEMBER [lramirez];
+ALTER ROLE rol_jurado ADD MEMBER jurado_externo1;
+
+-- ============================================
+-- PASO 4: Vista restringida
+-- ============================================
+CREATE VIEW jurado.vw_TesisPublica AS
+SELECT TesisID, Titulo, Estudiante, FechaSustentacion
+FROM jurado.Tesis
+WHERE Estado = 'Aprobada' OR Estado = 'Pendiente';
+
+GRANT SELECT ON jurado.vw_TesisPublica TO rol_jurado;`);
+
+        setScript(1, 3, 'Proyecto 1.3: Políticas estrictas para cuentas SQL Server',
+            `-- ============================================
+-- PASO 1: Habilitar políticas de contraseña
+-- ============================================
+USE master;
+GO
+EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
+EXEC sp_configure 'password policy enforcement', 1; RECONFIGURE;
+
+-- ============================================
+-- PASO 2: Crear logins con políticas estrictas
+-- ============================================
+CREATE LOGIN admin_grados WITH 
+    PASSWORD = 'Grad0s@2025#Admin$Seguro!',
+    CHECK_POLICY = ON,
+    CHECK_EXPIRATION = ON,
+    MUST_CHANGE = ON,
+    DEFAULT_DATABASE = GradosTítulos;
+
+CREATE LOGIN operador_grados WITH 
+    PASSWORD = '0per@d0r#2025$Titul0s!',
+    CHECK_POLICY = ON,
+    CHECK_EXPIRATION = ON,
+    DEFAULT_DATABASE = GradosTítulos;
+
+-- ============================================
+-- PASO 3: Crear roles y asignar permisos
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE ROLE rol_admin_grados;
+GRANT CONTROL ON DATABASE::GradosTitulos TO rol_admin_grados;
+
+CREATE ROLE rol_operador_grados;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::tramites TO rol_operador_grados;
+DENY DELETE ON SCHEMA::tesis TO rol_operador_grados;
+
+ALTER ROLE rol_admin_grados ADD MEMBER admin_grados;
+ALTER ROLE rol_operador_grados ADD MEMBER operador_grados;
+
+-- ============================================
+-- PASO 4: Auditoría de accesos
+-- ============================================
+CREATE SERVER AUDIT audit_grados_titulos
+TO FILE (FILEPATH = 'C:\\SQLAudit\\', MAXSIZE = 100 MB, MAX_ROLLOVER_FILES = 10);
+
+ALTER SERVER AUDIT audit_grados_titulos WITH (STATE = ON);
+
+CREATE SERVER AUDIT SPECIFICATION audit_login_grados
+FOR SERVER AUDIT audit_grados_titulos
+ADD (SUCCESSFUL_LOGIN_GROUP), ADD (FAILED_LOGIN_GROUP)
+WITH (STATE = ON);`);
+
+        // ===== TEMA 2 =====
+        setScript(2, 1, 'Proyecto 2.1: Configuración segura de servicios SQL Server',
+            `-- ============================================
+-- PASO 1: Verificar cuentas de servicio
+-- ============================================
+USE master;
+GO
+SELECT servicename, service_account, status_desc, startup_type_desc
+FROM sys.dm_server_services;
+
+-- ============================================
+-- PASO 2: Crear logins para cuentas de servicio
+-- ============================================
+CREATE LOGIN [NT SERVICE\\MSSQLSERVER] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTitulos;
+CREATE LOGIN [NT SERVICE\\SQLSERVERAGENT] FROM WINDOWS WITH DEFAULT_DATABASE = GradosTitulos;
+
+USE GradosTitulos;
+GO
+CREATE USER [MSSQLSERVER] FOR LOGIN [NT SERVICE\\MSSQLSERVER];
+CREATE USER [SQLSERVERAGENT] FOR LOGIN [NT SERVICE\\SQLSERVERAGENT];
+
+ALTER ROLE db_owner ADD MEMBER [MSSQLSERVER];
+ALTER ROLE db_owner ADD MEMBER [SQLSERVERAGENT];
+
+-- ============================================
+-- PASO 3: Procedimiento para backups (ejecutado por Agent)
+-- ============================================
+CREATE PROCEDURE dbo.sp_BackupDatabase
+    @DatabaseName NVARCHAR(128)
+AS
+BEGIN
+    DECLARE @BackupPath NVARCHAR(500) = 'C:\\Backups\\SQL\\';
+    DECLARE @BackupFileName NVARCHAR(500) = @BackupPath + @DatabaseName + '_' + 
+                          FORMAT(GETDATE(), 'yyyyMMdd_HHmmss') + '.bak';
+    BACKUP DATABASE @DatabaseName TO DISK = @BackupFileName
+    WITH FORMAT, INIT, NAME = 'Full Backup';
+END;
+GO
+
+GRANT EXECUTE ON dbo.sp_BackupDatabase TO [SQLSERVERAGENT];`);
+
+        setScript(2, 2, 'Proyecto 2.2: Monitoreo de servicios críticos del servidor',
+            `-- ============================================
+-- CONSULTA 1: Estado de servicios
+-- ============================================
+SELECT servicename, service_account, status_desc, startup_type_desc,
+       last_startup_time, service_process_id
+FROM sys.dm_server_services;
+
+-- ============================================
+-- CONSULTA 2: Estado de la base de datos
+-- ============================================
+SELECT name, state_desc, recovery_model_desc, user_access_desc,
+       compatibility_level, last_good_checkdbtime
+FROM sys.databases WHERE name = 'GradosTitulos';
+
+-- ============================================
+-- CONSULTA 3: Conexiones activas
+-- ============================================
+SELECT session_id, login_name, host_name, program_name,
+       login_time, status, cpu_time, reads, writes
+FROM sys.dm_exec_sessions
+WHERE database_id = DB_ID('GradosTitulos') AND is_user_process = 1;
+
+-- ============================================
+-- CONSULTA 4: Bloqueos y esperas
+-- ============================================
+SELECT session_id, blocking_session_id, wait_type, wait_time,
+       wait_resource, command, text
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle)
+WHERE blocking_session_id <> 0 OR wait_type NOT LIKE '%SLEEP%';
+
+-- ============================================
+-- VISTA CONSOLIDADA
+-- ============================================
+CREATE OR ALTER VIEW dbo.vw_ServerHealth AS
+SELECT GETDATE() AS FechaConsulta,
+       (SELECT state_desc FROM sys.databases WHERE name = 'GradosTitulos') AS EstadoBD,
+       (SELECT COUNT(*) FROM sys.dm_exec_sessions WHERE database_id = DB_ID('GradosTitulos')) AS ConexionesActivas,
+       (SELECT DATEDIFF(HOUR, last_startup_time, GETDATE()) 
+        FROM sys.dm_server_services WHERE servicename LIKE '%MSSQLSERVER%') AS HorasDesdeInicio;`);
+
+        setScript(2, 3, 'Proyecto 2.3: Configuración de protocolos de red seguros',
+            `-- ============================================
+-- PASO 1: Verificar protocolos habilitados (registro)
+-- ============================================
+DECLARE @TCPEnabled INT;
+EXEC master.dbo.xp_regread 
+    @rootkey = 'HKEY_LOCAL_MACHINE',
+    @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL15.MSSQLSERVER\\MSSQLServer\\SuperSocketNetLib\\Tcp',
+    @value_name = 'Enabled',
+    @value = @TCPEnabled OUTPUT;
+SELECT 'TCP/IP Protocol' AS Protocolo, 
+       CASE @TCPEnabled WHEN 1 THEN 'Habilitado' ELSE 'Deshabilitado' END AS Estado;
+
+-- ============================================
+-- PASO 2: Verificar cifrado forzado
+-- ============================================
+SELECT name, value, value_in_use
+FROM sys.dm_server_registry
+WHERE value_name LIKE '%Encryption%' OR value_name LIKE '%Certificate%';
+
+-- ============================================
+-- PASO 3: Verificar conexiones no cifradas
+-- ============================================
+SELECT session_id, client_net_address, encrypt_option, protocol_type
+FROM sys.dm_exec_connections
+WHERE session_id > 50 AND encrypt_option = 'FALSE';
+
+-- ============================================
+-- PASO 4: Procedimiento de alerta para conexiones no cifradas
+-- ============================================
+CREATE OR ALTER PROCEDURE dbo.sp_CheckUnencryptedConnections
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.dm_exec_connections 
+               WHERE encrypt_option = 'FALSE' AND session_id > 50)
+    BEGIN
+        PRINT 'ALERTA: Se detectaron conexiones no cifradas.';
+        -- En producción: enviar correo con sp_send_dbmail
+    END
+END;
+
+-- ============================================
+-- PASO 5: Vista de seguridad
+-- ============================================
+CREATE OR ALTER VIEW dbo.vw_SecurityConfiguration AS
+SELECT 'Cifrado Forzado' AS Configuracion,
+       CASE WHEN EXISTS (SELECT 1 FROM sys.dm_server_registry 
+                         WHERE value_name = 'ForceEncryption' AND value = '1')
+            THEN 'Activado' ELSE 'Desactivado' END AS Valor;`);
+
+        // ===== TEMA 3 =====
+        setScript(3, 1, 'Proyecto 3.1: Roles para el proceso de grados y títulos',
+            `-- ============================================
+-- PASO 1: Crear esquemas
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE SCHEMA Catalogo;
+CREATE SCHEMA Academico;
+CREATE SCHEMA Tramite;
+CREATE SCHEMA Evaluacion;
+CREATE SCHEMA Documento;
+
+-- ============================================
+-- PASO 2: Crear roles por esquema
+-- ============================================
+CREATE ROLE rol_catalogo;
+CREATE ROLE rol_academico;
+CREATE ROLE rol_tramite;
+CREATE ROLE rol_evaluacion;
+CREATE ROLE rol_documento;
+
+-- ============================================
+-- PASO 3: Asignar permisos
+-- ============================================
+-- Catálogo: lectura completa
+GRANT SELECT ON SCHEMA::Catalogo TO rol_catalogo;
+GRANT INSERT, UPDATE, DELETE ON Catalogo.Carreras TO rol_catalogo;
+
+-- Académico: gestión de estudiantes/docentes (sin DELETE)
+GRANT SELECT, INSERT, UPDATE ON Academico.Estudiantes TO rol_academico;
+DENY DELETE ON Academico.Estudiantes TO rol_academico;
+
+-- Trámite: gestión de solicitudes
+GRANT SELECT, INSERT, UPDATE ON Tramite.Solicitudes TO rol_tramite;
+DENY DELETE ON Tramite.Solicitudes TO rol_tramite;
+
+-- Evaluación: solo lectura de tesis, inserción de observaciones
+GRANT SELECT ON Evaluacion.Tesis TO rol_evaluacion;
+GRANT SELECT, INSERT ON Evaluacion.Observaciones TO rol_evaluacion;
+DENY UPDATE ON Evaluacion.Tesis TO rol_evaluacion;
+
+-- Documento: control total
+GRANT SELECT, INSERT, UPDATE, DELETE ON Documento.Archivos TO rol_documento;
+
+-- ============================================
+-- PASO 4: Procedimiento para registrar observación
+-- ============================================
+CREATE PROCEDURE Evaluacion.sp_RegistrarObservacion
+    @TesisID INT, @EvaluadorID INT, @Comentario NVARCHAR(MAX), @Tipo VARCHAR(50)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Evaluacion.Tesis WHERE TesisID = @TesisID AND Estado IN ('En Desarrollo', 'Evaluacion'))
+    BEGIN
+        RAISERROR('La tesis no está en estado de evaluación', 16, 1);
+        RETURN;
+    END;
+    INSERT INTO Evaluacion.Observaciones (TesisID, EvaluadorID, Comentario, Tipo, Fecha)
+    VALUES (@TesisID, @EvaluadorID, @Comentario, @Tipo, GETDATE());
+END;
+GRANT EXECUTE ON Evaluacion.sp_RegistrarObservacion TO rol_evaluacion;`);
+
+        setScript(3, 2, 'Proyecto 3.2: Implementación de roles para evaluadores de tesis',
+            `-- ============================================
+-- PASO 1: Crear rol específico para evaluadores
+-- ============================================
+CREATE ROLE rol_evaluador_tesis;
+
+-- ============================================
+-- PASO 2: Permisos de lectura (vista restringida)
+-- ============================================
+CREATE VIEW Evaluacion.vw_TesisParaEvaluador AS
+SELECT t.TesisID, t.Titulo, t.Resumen,
+       e.Nombres + ' ' + e.Apellidos AS Estudiante,
+       d.Nombres + ' ' + d.Apellidos AS Director,
+       t.FechaInicio, t.FechaSustentacion, t.Estado
+FROM Evaluacion.Tesis t
+INNER JOIN Academico.Estudiantes e ON t.EstudianteID = e.EstudianteID
+LEFT JOIN Academico.Docentes d ON t.DirectorID = d.DocenteID
+WHERE t.Estado IN ('En Desarrollo', 'Evaluacion', 'Sustentada');
+
+GRANT SELECT ON Evaluacion.vw_TesisParaEvaluador TO rol_evaluador_tesis;
+
+-- ============================================
+-- PASO 3: Permisos para observaciones (solo INSERT)
+-- ============================================
+GRANT INSERT ON Evaluacion.Observaciones TO rol_evaluador_tesis;
+DENY SELECT ON Evaluacion.Observaciones TO rol_evaluador_tesis;
+
+-- ============================================
+-- PASO 4: Denegar modificaciones en tablas académicas
+-- ============================================
+DENY INSERT, UPDATE, DELETE ON Academico.Estudiantes TO rol_evaluador_tesis;
+DENY UPDATE ON Evaluacion.Tesis TO rol_evaluador_tesis;
+
+-- ============================================
+-- PASO 5: Procedimiento seguro para registrar observación
+-- ============================================
+CREATE PROCEDURE Evaluacion.sp_RegistrarObservacionEvaluador
+    @TesisID INT, @EvaluadorID INT, @Comentario NVARCHAR(MAX), @Tipo VARCHAR(50)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Evaluacion.Tesis 
+                   WHERE TesisID = @TesisID AND Estado IN ('En Desarrollo', 'Evaluacion'))
+    BEGIN
+        RAISERROR('La tesis no está en estado de evaluación', 16, 1);
+        RETURN;
+    END;
+    IF NOT EXISTS (SELECT 1 FROM Evaluacion.Tesis 
+                   WHERE TesisID = @TesisID AND (DirectorID = @EvaluadorID OR CoDirectorID = @EvaluadorID))
+    BEGIN
+        RAISERROR('No está autorizado para evaluar esta tesis', 16, 1);
+        RETURN;
+    END;
+    INSERT INTO Evaluacion.Observaciones (TesisID, EvaluadorID, Comentario, Tipo, Fecha)
+    VALUES (@TesisID, @EvaluadorID, @Comentario, @Tipo, GETDATE());
+END;
+GRANT EXECUTE ON Evaluacion.sp_RegistrarObservacionEvaluador TO rol_evaluador_tesis;`);
+
+        setScript(3, 3, 'Proyecto 3.3: Administración de roles jerárquicos',
+            `-- ============================================
+-- PASO 1: Crear roles jerárquicos
+-- ============================================
+CREATE ROLE rol_operador;
+CREATE ROLE rol_supervisor;
+CREATE ROLE rol_administrador;
+
+-- ============================================
+-- PASO 2: Definir herencia (Administrador > Supervisor > Operador)
+-- ============================================
+ALTER ROLE rol_operador ADD MEMBER rol_supervisor;
+ALTER ROLE rol_supervisor ADD MEMBER rol_administrador;
+
+-- ============================================
+-- PASO 3: Permisos del Operador (Nivel 1)
+-- ============================================
+GRANT SELECT ON SCHEMA::Catalogo TO rol_operador;
+GRANT SELECT ON SCHEMA::Academico TO rol_operador;
+GRANT SELECT ON SCHEMA::Tramite TO rol_operador;
+GRANT INSERT, UPDATE ON Tramite.Solicitudes TO rol_operador;
+DENY DELETE ON SCHEMA::Academico TO rol_operador;
+
+-- ============================================
+-- PASO 4: Permisos del Supervisor (Nivel 2 - hereda de operador)
+-- ============================================
+GRANT UPDATE ON Tramite.Solicitudes TO rol_supervisor;
+GRANT UPDATE ON Evaluacion.Tesis TO rol_supervisor;
+GRANT SELECT ON Evaluacion.Observaciones TO rol_supervisor;
+GRANT SELECT ON dbo.AuditoriaSistema TO rol_supervisor;
+
+-- ============================================
+-- PASO 5: Permisos del Administrador (Nivel 3 - hereda de supervisor)
+-- ============================================
+GRANT CONTROL ON SCHEMA::Catalogo TO rol_administrador;
+GRANT CONTROL ON SCHEMA::Academico TO rol_administrador;
+GRANT CREATE TABLE TO rol_administrador;
+GRANT CREATE PROCEDURE TO rol_administrador;
+GRANT ALTER ANY USER TO rol_administrador;
+GRANT ALTER ANY ROLE TO rol_administrador;
+
+-- ============================================
+-- PASO 6: Función para determinar nivel jerárquico
+-- ============================================
+CREATE FUNCTION dbo.fn_NivelJerarquicoUsuario(@Usuario NVARCHAR(100) = NULL)
+RETURNS VARCHAR(20)
+AS
+BEGIN
+    IF @Usuario IS NULL SET @Usuario = USER_NAME();
+    IF IS_MEMBER('rol_administrador') = 1 RETURN 'Administrador';
+    IF IS_MEMBER('rol_supervisor') = 1 RETURN 'Supervisor';
+    IF IS_MEMBER('rol_operador') = 1 RETURN 'Operador';
+    RETURN 'Sin rol asignado';
+END;`);
+
+        // ===== TEMA 4 =====
+        setScript(4, 1, 'Proyecto 4.1: Operadores con solo consulta de estudiantes',
+            `-- ============================================
+-- PASO 1: Crear rol de operador
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE ROLE rol_operador;
+
+-- ============================================
+-- PASO 2: GRANT SELECT (consulta permitida)
+-- ============================================
+GRANT SELECT ON Academico.Estudiantes TO rol_operador;
+
+-- ============================================
+-- PASO 3: DENY para operaciones de modificación
+-- ============================================
+DENY INSERT ON Academico.Estudiantes TO rol_operador;
+DENY UPDATE ON Academico.Estudiantes TO rol_operador;
+DENY DELETE ON Academico.Estudiantes TO rol_operador;
+
+-- ============================================
+-- PASO 4: DENY a nivel de esquema (seguridad adicional)
+-- ============================================
+DENY INSERT ON SCHEMA::Academico TO rol_operador;
+DENY UPDATE ON SCHEMA::Academico TO rol_operador;
+DENY DELETE ON SCHEMA::Academico TO rol_operador;
+
+-- ============================================
+-- PASO 5: Vista restringida para operadores
+-- ============================================
+CREATE VIEW Academico.vw_EstudiantesParaOperador AS
+SELECT EstudianteID, Codigo, Nombres, Apellidos, Estado, FechaRegistro
+FROM Academico.Estudiantes
+WHERE Estado = 'Activo';
+
+GRANT SELECT ON Academico.vw_EstudiantesParaOperador TO rol_operador;
+
+-- ============================================
+-- PASO 6: Verificación de permisos
+-- ============================================
+SELECT permission_name, state_desc, OBJECT_NAME(major_id) AS Tabla
+FROM sys.database_permissions
+WHERE grantee_principal_id = DATABASE_PRINCIPAL_ID('rol_operador')
+  AND class = 1;`);
+
+        setScript(4, 2, 'Proyecto 4.2: Restricción de acceso a resoluciones y diplomas',
+            `-- ============================================
+-- PASO 1: Crear esquema y tablas de documentos oficiales
+-- ============================================
+CREATE SCHEMA DocumentosOficiales;
+GO
+
+CREATE TABLE DocumentosOficiales.Resoluciones
+(
+    ResolucionID INT IDENTITY(1,1) PRIMARY KEY,
+    Numero VARCHAR(20) NOT NULL UNIQUE,
+    FechaEmision DATETIME DEFAULT GETDATE(),
+    Asunto NVARCHAR(500) NOT NULL,
+    Contenido NVARCHAR(MAX),
+    FirmadoPor NVARCHAR(100),
+    Estado VARCHAR(20) DEFAULT 'Activo'
+);
+
+CREATE TABLE DocumentosOficiales.Diplomas
+(
+    DiplomaID INT IDENTITY(1,1) PRIMARY KEY,
+    Numero VARCHAR(20) NOT NULL UNIQUE,
+    EstudianteID INT,
+    Tipo VARCHAR(50),
+    GradoObtenido NVARCHAR(100),
+    FirmadoPor NVARCHAR(100),
+    Estado VARCHAR(20) DEFAULT 'Pendiente'
+);
+
+-- ============================================
+-- PASO 2: Crear roles
+-- ============================================
+CREATE ROLE rol_oficina_grados;
+CREATE ROLE rol_consulta_documentos;
+
+-- ============================================
+-- PASO 3: Permisos para Oficina de Grados (control total)
+-- ============================================
+GRANT SELECT, INSERT, UPDATE, DELETE ON DocumentosOficiales.Resoluciones TO rol_oficina_grados;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DocumentosOficiales.Diplomas TO rol_oficina_grados;
+GRANT CONTROL ON SCHEMA::DocumentosOficiales TO rol_oficina_grados;
+
+-- ============================================
+-- PASO 4: Permisos para consulta general (solo lectura a través de vistas)
+-- ============================================
+GRANT SELECT ON DocumentosOficiales.Resoluciones TO rol_consulta_documentos;
+GRANT SELECT ON DocumentosOficiales.Diplomas TO rol_consulta_documentos;
+DENY INSERT, UPDATE, DELETE ON DocumentosOficiales.Resoluciones TO rol_consulta_documentos;
+DENY INSERT, UPDATE, DELETE ON DocumentosOficiales.Diplomas TO rol_consulta_documentos;
+
+-- ============================================
+-- PASO 5: Vistas públicas (ocultan contenido sensible)
+-- ============================================
+CREATE VIEW DocumentosOficiales.vw_ResolucionesPublicas AS
+SELECT ResolucionID, Numero, FechaEmision, Asunto, FirmadoPor, Estado
+FROM DocumentosOficiales.Resoluciones WHERE Estado = 'Activo';
+
+GRANT SELECT ON DocumentosOficiales.vw_ResolucionesPublicas TO rol_consulta_documentos;
+DENY SELECT ON DocumentosOficiales.Resoluciones TO rol_consulta_documentos;`);
+
+        setScript(4, 3, 'Proyecto 4.3: Revocación de permisos temporales',
+            `-- ============================================
+-- PASO 1: Crear rol para auditor temporal
+-- ============================================
+CREATE ROLE rol_auditor_temporal;
+
+-- ============================================
+-- PASO 2: Asignar permisos (solo lectura)
+-- ============================================
+GRANT SELECT ON SCHEMA::Academico TO rol_auditor_temporal;
+GRANT SELECT ON SCHEMA::Tramite TO rol_auditor_temporal;
+GRANT SELECT ON SCHEMA::Evaluacion TO rol_auditor_temporal;
+
+-- ============================================
+-- PASO 3: Denegar modificaciones
+-- ============================================
+DENY INSERT, UPDATE, DELETE ON SCHEMA::Academico TO rol_auditor_temporal;
+DENY INSERT, UPDATE, DELETE ON SCHEMA::Tramite TO rol_auditor_temporal;
+
+-- ============================================
+-- PASO 4: Vistas anonimizadas para auditor
+-- ============================================
+CREATE VIEW dbo.vw_EstudiantesParaAuditor AS
+SELECT EstudianteID, Codigo, 
+       LEFT(Nombres, 1) + '. ' + Apellidos AS NombreCompleto,
+       '***-****' AS DNI_Mascara, Estado
+FROM Academico.Estudiantes;
+
+GRANT SELECT ON dbo.vw_EstudiantesParaAuditor TO rol_auditor_temporal;
+
+-- ============================================
+-- PASO 5: Tabla de control de acceso temporal
+-- ============================================
+CREATE TABLE dbo.AccesosTemporales
+(
+    AccesoID INT IDENTITY(1,1) PRIMARY KEY,
+    Usuario NVARCHAR(100) NOT NULL,
+    FechaInicio DATETIME NOT NULL,
+    FechaFin DATETIME NOT NULL,
+    Estado VARCHAR(20) DEFAULT 'Activo'
+);
+
+-- ============================================
+-- PASO 6: Procedimiento para otorgar acceso temporal
+-- ============================================
+CREATE PROCEDURE dbo.sp_OtorgarAccesoTemporal
+    @Usuario NVARCHAR(100), @DuracionDias INT = 7
+AS
+BEGIN
+    INSERT INTO dbo.AccesosTemporales (Usuario, FechaInicio, FechaFin)
+    VALUES (@Usuario, GETDATE(), DATEADD(DAY, @DuracionDias, GETDATE()));
+    EXEC sp_addrolemember 'rol_auditor_temporal', @Usuario;
+END;
+
+-- ============================================
+-- PASO 7: Procedimiento para revocar acceso (REVOKE implícito)
+-- ============================================
+CREATE PROCEDURE dbo.sp_RevocarAccesoTemporal @Usuario NVARCHAR(100)
+AS
+BEGIN
+    UPDATE dbo.AccesosTemporales SET Estado = 'Revocado' 
+    WHERE Usuario = @Usuario AND Estado = 'Activo';
+    EXEC sp_droprolemember 'rol_auditor_temporal', @Usuario;
+END;
+
+-- ============================================
+-- PASO 8: Trigger de LOGON para verificar acceso vigente
+-- ============================================
+CREATE TRIGGER trg_VerificarAccesoAuditor ON ALL SERVER FOR LOGON
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.database_principals u
+               INNER JOIN sys.database_role_members rm ON u.principal_id = rm.member_principal_id
+               INNER JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+               WHERE r.name = 'rol_auditor_temporal' AND u.name = ORIGINAL_LOGIN())
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM GradosTitulos.dbo.AccesosTemporales
+                       WHERE Usuario = ORIGINAL_LOGIN() AND Estado = 'Activo' AND FechaFin >= GETDATE())
+        BEGIN
+            RAISERROR('Acceso temporal expirado o revocado', 16, 1);
+            ROLLBACK;
+        END;
+    END;
+END;`);
+
+        // ===== TEMA 5 =====
+        setScript(5, 1, 'Proyecto 5.1: Implementación de TDE para GradosTitulos',
+            `-- ============================================
+-- PASO 1: Verificar soporte de TDE
+-- ============================================
+SELECT SERVERPROPERTY('Edition') AS Edition,
+       CASE WHEN SERVERPROPERTY('Edition') LIKE '%Enterprise%' 
+              OR SERVERPROPERTY('Edition') LIKE '%Developer%'
+            THEN 'Soporta TDE' ELSE 'No soporta TDE' END AS TDESupport;
+
+-- ============================================
+-- PASO 2: Crear clave maestra en master
+-- ============================================
+USE master;
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'Grad0sT1tul0s#2025$MasterKey!Segur0';
+
+-- ============================================
+-- PASO 3: Crear certificado para TDE
+-- ============================================
+CREATE CERTIFICATE CertificadoTDEGradosTitulos
+WITH SUBJECT = 'Certificado para TDE - GradosTitulos',
+     EXPIRY_DATE = '2030-12-31';
+
+-- Backup del certificado (CRÍTICO - guardar en lugar seguro)
+BACKUP CERTIFICATE CertificadoTDEGradosTitulos
+TO FILE = 'C:\\SQLBackup\\CertificadoTDEGradosTitulos.cer'
+WITH PRIVATE KEY (FILE = 'C:\\SQLBackup\\CertificadoTDEGradosTitulos.pvk',
+                  ENCRYPTION BY PASSWORD = 'B@ckup#2025$C3rtif1c4d0!');
+
+-- ============================================
+-- PASO 4: Crear clave de cifrado de la base de datos (DEK)
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE DATABASE ENCRYPTION KEY
+WITH ALGORITHM = AES_256
+ENCRYPTION BY SERVER CERTIFICATE CertificadoTDEGradosTitulos;
+
+-- ============================================
+-- PASO 5: Habilitar TDE
+-- ============================================
+ALTER DATABASE GradosTitulos SET ENCRYPTION ON;
+
+-- ============================================
+-- PASO 6: Monitorear progreso
+-- ============================================
+SELECT DB_NAME(database_id) AS BaseDatos,
+       CASE encryption_state WHEN 0 THEN 'Sin cifrar' WHEN 3 THEN 'Cifrado' END AS Estado,
+       percent_complete, key_algorithm, key_length
+FROM sys.dm_database_encryption_keys
+WHERE database_id = DB_ID('GradosTitulos');`);
+
+        setScript(5, 2, 'Proyecto 5.2: Protección de datos personales del tesista',
+            `-- ============================================
+-- NOTA: Always Encrypted se configura principalmente con SSMS
+-- Este script muestra la estructura y procedimientos necesarios
+-- ============================================
+
+-- ============================================
+-- PASO 1: Crear tabla con columnas para cifrar
+-- ============================================
+USE GradosTitulos;
+GO
+
+CREATE TABLE dbo.Estudiantes
+(
+    EstudianteID INT IDENTITY(1,1) PRIMARY KEY,
+    Codigo VARCHAR(20) NOT NULL UNIQUE,
+    Nombres NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100) NOT NULL,
+    -- Columnas para Always Encrypted
+    DNI VARCHAR(8) NOT NULL,          -- Deterministico (búsquedas)
+    Correo NVARCHAR(100) NOT NULL,    -- Deterministico (búsquedas)
+    Telefono VARCHAR(15) NULL,        -- Aleatorio (máxima seguridad)
+    Direccion NVARCHAR(200) NULL,
+    FechaNacimiento DATE NULL,
+    Estado VARCHAR(20) DEFAULT 'Activo'
+);
+
+-- ============================================
+-- PASO 2: Procedimiento para insertar (con parámetros tipados)
+-- ============================================
+CREATE PROCEDURE dbo.sp_InsertarEstudianteCifrado
+    @Codigo VARCHAR(20), @Nombres NVARCHAR(100), @Apellidos NVARCHAR(100),
+    @DNI VARCHAR(8), @Correo NVARCHAR(100), @Telefono VARCHAR(15) = NULL
+AS
+BEGIN
+    INSERT INTO dbo.Estudiantes (Codigo, Nombres, Apellidos, DNI, Correo, Telefono)
+    VALUES (@Codigo, @Nombres, @Apellidos, @DNI, @Correo, @Telefono);
+END;
+
+-- ============================================
+-- PASO 3: Procedimiento para buscar por DNI (cifrado deterministico)
+-- ============================================
+CREATE PROCEDURE dbo.sp_BuscarEstudiantePorDNI @DNI VARCHAR(8)
+AS
+BEGIN
+    SELECT EstudianteID, Codigo, Nombres, Apellidos, DNI, Correo, Telefono
+    FROM dbo.Estudiantes
+    WHERE DNI = @DNI;
+END;
+
+-- ============================================
+-- PASO 4: Verificar columnas cifradas
+-- ============================================
+SELECT name, is_encrypted, encryption_type_desc, encryption_algorithm_name
+FROM sys.columns
+WHERE OBJECT_NAME(object_id) = 'Estudiantes' AND is_encrypted = 1;
+
+-- ============================================
+-- PASO 5: Vistas para diferentes niveles de acceso
+-- ============================================
+-- Vista con datos descifrados (requiere acceso a claves)
+CREATE VIEW dbo.vw_EstudiantesCompletos AS
+SELECT * FROM dbo.Estudiantes;
+
+-- Vista con datos cifrados (sin acceso a claves)
+CREATE VIEW dbo.vw_EstudiantesCifrados AS
+SELECT EstudianteID, Codigo, Nombres, Apellidos,
+       DNI AS DNI_Cifrado, Correo AS Correo_Cifrado, Telefono AS Telefono_Cifrado
+FROM dbo.Estudiantes;`);
+
+        setScript(5, 3, 'Proyecto 5.3: Cifrado de información de jurados y asesores',
+            `-- ============================================
+-- PASO 1: Crear tablas con Always Encrypted para asesores y jurados
+-- ============================================
+USE GradosTitulos;
+GO
+
+-- Tabla de Docentes (Asesores)
+CREATE TABLE dbo.Docentes
+(
+    DocenteID INT IDENTITY(1,1) PRIMARY KEY,
+    Codigo VARCHAR(20) NOT NULL UNIQUE,
+    Nombres NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100) NOT NULL,
+    -- Datos personales cifrados
+    DNI VARCHAR(8) NOT NULL,          -- Deterministico
+    Correo NVARCHAR(100) NOT NULL,    -- Deterministico
+    Telefono VARCHAR(15) NULL,        -- Aleatorio
+    Direccion NVARCHAR(200) NULL,     -- Aleatorio
+    FechaNacimiento DATE NULL,        -- Aleatorio
+    -- Datos académicos (no cifrados)
+    Especialidad NVARCHAR(100),
+    Grado NVARCHAR(50),
+    Universidad NVARCHAR(100),
+    AniosExperiencia INT,
+    Estado VARCHAR(20) DEFAULT 'Activo'
+);
+
+-- Tabla de Jurados (datos duplicados para preservar historial)
+CREATE TABLE dbo.Jurados
+(
+    JuradoID INT IDENTITY(1,1) PRIMARY KEY,
+    TesisID INT NOT NULL,
+    DocenteID INT NOT NULL,
+    Rol VARCHAR(20) NOT NULL, -- 'Titular', 'Suplente'
+    -- Datos personales cifrados (copia para historial)
+    DNI VARCHAR(8) NOT NULL,
+    Correo NVARCHAR(100) NOT NULL,
+    Telefono VARCHAR(15) NULL,
+    Direccion NVARCHAR(200) NULL,
+    FechaAsignacion DATETIME DEFAULT GETDATE(),
+    Estado VARCHAR(20) DEFAULT 'Activo'
+);
+
+-- ============================================
+-- PASO 2: Procedimiento para asignar jurado (copia datos cifrados)
+-- ============================================
+CREATE PROCEDURE dbo.sp_AsignarJurado
+    @TesisID INT, @DocenteID INT, @Rol VARCHAR(20)
+AS
+BEGIN
+    INSERT INTO dbo.Jurados (TesisID, DocenteID, Rol, DNI, Correo, Telefono, Direccion)
+    SELECT @TesisID, @DocenteID, @Rol, DNI, Correo, Telefono, Direccion
+    FROM dbo.Docentes WHERE DocenteID = @DocenteID;
+END;
+
+-- ============================================
+-- PASO 3: Vistas anonimizadas (sin datos personales)
+-- ============================================
+CREATE VIEW dbo.vw_DocentesPublicos AS
+SELECT DocenteID, Codigo, Nombres, Apellidos,
+       '****-****' AS DNI, '***@***.***' AS Correo,
+       Especialidad, Grado, Universidad, Estado
+FROM dbo.Docentes;
+
+CREATE VIEW dbo.vw_JuradosPublicos AS
+SELECT j.JuradoID, j.Rol, d.Nombres + ' ' + d.Apellidos AS NombreCompleto,
+       d.Especialidad, j.FechaAsignacion, j.Estado
+FROM dbo.Jurados j
+INNER JOIN dbo.Docentes d ON j.DocenteID = d.DocenteID;`);
+
+        // ===== TEMA 6 =====
+        setScript(6, 1, 'Proyecto 6.1: Auditoría de accesos a la base de datos',
+            `-- ============================================
+-- PASO 1: Crear auditoría de servidor
+-- ============================================
+USE master;
+GO
+
+CREATE SERVER AUDIT Auditoria_Accesos_GradosTitulos
+TO FILE (FILEPATH = 'C:\\SQLAudit\\Accesos\\', MAXSIZE = 100 MB, MAX_ROLLOVER_FILES = 20)
+WITH (QUEUE_DELAY = 1000, ON_FAILURE = CONTINUE);
+
+-- ============================================
+-- PASO 2: Especificación para eventos de login
+-- ============================================
+CREATE SERVER AUDIT SPECIFICATION AudSpec_Accesos_Logins
+FOR SERVER AUDIT Auditoria_Accesos_GradosTitulos
+ADD (SUCCESSFUL_LOGIN_GROUP),
+ADD (FAILED_LOGIN_GROUP),
+ADD (LOGOUT_GROUP);
+
+-- ============================================
+-- PASO 3: Especificación de base de datos
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE DATABASE AUDIT SPECIFICATION AudSpec_Accesos_BaseDatos
+FOR SERVER AUDIT Auditoria_Accesos_GradosTitulos
+ADD (DATABASE_OBJECT_ACCESS_GROUP),
+ADD (SCHEMA_OBJECT_ACCESS_GROUP);
+
+-- ============================================
+-- PASO 4: Habilitar auditoría
+-- ============================================
+ALTER SERVER AUDIT Auditoria_Accesos_GradosTitulos WITH (STATE = ON);
+ALTER SERVER AUDIT SPECIFICATION AudSpec_Accesos_Logins WITH (STATE = ON);
+ALTER DATABASE AUDIT SPECIFICATION AudSpec_Accesos_BaseDatos WITH (STATE = ON);
+
+-- ============================================
+-- PASO 5: Vistas para consultar logs
+-- ============================================
+CREATE VIEW dbo.vw_Auditoria_LoginsExitosos AS
+SELECT event_time, session_server_principal_name AS Usuario,
+       database_name, client_ip, application_name, host_name
+FROM sys.fn_get_audit_file('C:\\SQLAudit\\Accesos\\*.sqlaudit', DEFAULT, DEFAULT)
+WHERE [succeeded] = 1 AND ([action_id] = 'LGIN' OR [action_id] = 'LGIO');
+
+CREATE VIEW dbo.vw_Auditoria_LoginsFallidos AS
+SELECT event_time, session_server_principal_name AS Usuario,
+       client_ip, application_name
+FROM sys.fn_get_audit_file('C:\\SQLAudit\\Accesos\\*.sqlaudit', DEFAULT, DEFAULT)
+WHERE [succeeded] = 0 AND ([action_id] = 'LGIN' OR [action_id] = 'LGIF');
+
+-- ============================================
+-- PASO 6: Procedimiento para detectar accesos sospechosos
+-- ============================================
+CREATE PROCEDURE dbo.sp_Auditoria_DetectarAccesosSospechosos
+    @UmbralFallidos INT = 5, @PeriodoMinutos INT = 10
+AS
+BEGIN
+    SELECT session_server_principal_name AS Usuario, COUNT(*) AS IntentosFallidos
+    FROM sys.fn_get_audit_file('C:\\SQLAudit\\Accesos\\*.sqlaudit', DEFAULT, DEFAULT)
+    WHERE event_time >= DATEADD(MINUTE, -@PeriodoMinutos, GETDATE())
+      AND [succeeded] = 0 AND ([action_id] = 'LGIN' OR [action_id] = 'LGIF')
+    GROUP BY session_server_principal_name
+    HAVING COUNT(*) >= @UmbralFallidos;
+END;`);
+
+        setScript(6, 2, 'Proyecto 6.2: Auditoría de modificaciones en trámites académicos',
+            `-- ============================================
+-- PASO 1: Crear auditoría para modificaciones
+-- ============================================
+USE master;
+GO
+CREATE SERVER AUDIT Auditoria_Modificaciones_Tramites
+TO FILE (FILEPATH = 'C:\\SQLAudit\\Modificaciones\\', MAXSIZE = 100 MB, MAX_ROLLOVER_FILES = 30)
+WITH (QUEUE_DELAY = 1000, ON_FAILURE = CONTINUE);
+
+-- ============================================
+-- PASO 2: Especificación para esquema Tramite
+-- ============================================
+USE GradosTitulos;
+GO
+CREATE DATABASE AUDIT SPECIFICATION AudSpec_Modificaciones_Tramites
+FOR SERVER AUDIT Auditoria_Modificaciones_Tramites
+ADD (INSERT ON SCHEMA::Tramite BY PUBLIC),
+ADD (UPDATE ON SCHEMA::Tramite BY PUBLIC),
+ADD (DELETE ON SCHEMA::Tramite BY PUBLIC);
+
+ALTER SERVER AUDIT Auditoria_Modificaciones_Tramites WITH (STATE = ON);
+ALTER DATABASE AUDIT SPECIFICATION AudSpec_Modificaciones_Tramites WITH (STATE = ON);
+
+-- ============================================
+-- PASO 3: Tabla de historial para triggers
+-- ============================================
+CREATE TABLE dbo.Auditoria_HistorialTramites
+(
+    AuditoriaID INT IDENTITY(1,1) PRIMARY KEY,
+    Tabla NVARCHAR(100),
+    Accion VARCHAR(20),
+    RegistroID INT,
+    DatosAnteriores NVARCHAR(MAX),
+    DatosNuevos NVARCHAR(MAX),
+    Usuario NVARCHAR(100),
+    FechaAccion DATETIME DEFAULT GETDATE(),
+    IPCliente NVARCHAR(50),
+    Aplicacion NVARCHAR(100)
+);
+
+-- ============================================
+-- PASO 4: Triggers para auditoría detallada
+-- ============================================
+CREATE TRIGGER Tramite.trg_Audit_Update_Solicitudes
+ON Tramite.Solicitudes AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO dbo.Auditoria_HistorialTramites
+    (Tabla, Accion, RegistroID, DatosAnteriores, DatosNuevos, Usuario, IPCliente, Aplicacion)
+    SELECT 'Solicitudes', 'UPDATE', i.SolicitudID,
+           CONCAT('Estado: ', d.Estado),
+           CONCAT('Estado: ', i.Estado),
+           SYSTEM_USER, CONNECTIONPROPERTY('client_net_address'), APP_NAME()
+    FROM inserted i INNER JOIN deleted d ON i.SolicitudID = d.SolicitudID
+    WHERE i.Estado <> d.Estado;
+END;
+
+-- ============================================
+-- PASO 5: Procedimiento para verificar alertas
+-- ============================================
+CREATE PROCEDURE dbo.sp_Auditoria_VerificarAlertas
+    @PeriodoMinutos INT = 30
+AS
+BEGIN
+    -- Múltiples eliminaciones
+    SELECT Usuario, COUNT(*) AS Eliminaciones, 'Alto' AS Nivel
+    FROM dbo.Auditoria_HistorialTramites
+    WHERE Accion = 'DELETE' AND FechaAccion >= DATEADD(MINUTE, -@PeriodoMinutos, GETDATE())
+    GROUP BY Usuario HAVING COUNT(*) >= 3;
+    
+    -- Modificaciones en horario no laboral
+    SELECT Usuario, COUNT(*) AS Modificaciones, 'Medio' AS Nivel
+    FROM dbo.Auditoria_HistorialTramites
+    WHERE DATEPART(HOUR, FechaAccion) < 8 OR DATEPART(HOUR, FechaAccion) > 18
+    GROUP BY Usuario HAVING COUNT(*) >= 2;
+END;`);
+
+        setScript(6, 3, 'Proyecto 6.3: Sistema integral de auditoría institucional',
+            `-- ============================================
+-- PASO 1: Crear base de datos de auditoría
+-- ============================================
+CREATE DATABASE AuditoriaSistema;
+GO
+
+USE AuditoriaSistema;
+GO
+
+-- ============================================
+-- PASO 2: Tablas de auditoría
+-- ============================================
+CREATE TABLE dbo.EventosAuditoria
+(
+    EventoID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    TipoEvento VARCHAR(50) NOT NULL, -- LOGIN, PERMISSION_CHANGE, USER_CREATE, OBJECT_DELETE, DATA_MODIFY
+    FechaEvento DATETIME DEFAULT GETDATE(),
+    Usuario NVARCHAR(100) NOT NULL,
+    Objeto NVARCHAR(500),
+    Accion VARCHAR(50),
+    Detalles NVARCHAR(MAX),
+    IPCliente NVARCHAR(50),
+    Aplicacion NVARCHAR(100),
+    NivelSeveridad VARCHAR(20) DEFAULT 'Info'
+);
+
+CREATE TABLE dbo.CambiosPermisos
+(
+    CambioID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    EventoID BIGINT,
+    TipoPermiso VARCHAR(50),
+    UsuarioDestino NVARCHAR(100),
+    Permiso NVARCHAR(100),
+    Objeto NVARCHAR(500),
+    FOREIGN KEY (EventoID) REFERENCES dbo.EventosAuditoria(EventoID)
+);
+
+CREATE TABLE dbo.CreacionUsuarios
+(
+    CreacionID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    EventoID BIGINT,
+    UsuarioCreado NVARCHAR(100),
+    TipoUsuario VARCHAR(20),
+    FOREIGN KEY (EventoID) REFERENCES dbo.EventosAuditoria(EventoID)
+);
+
+CREATE TABLE dbo.EliminacionObjetos
+(
+    EliminacionID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    EventoID BIGINT,
+    ObjetoEliminado NVARCHAR(500),
+    TipoObjeto VARCHAR(50),
+    FOREIGN KEY (EventoID) REFERENCES dbo.EventosAuditoria(EventoID)
+);
+
+CREATE TABLE dbo.ModificacionesDatosCriticos
+(
+    ModificacionID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    EventoID BIGINT,
+    Tabla NVARCHAR(200),
+    RegistroID INT,
+    Accion VARCHAR(20),
+    DatosAnteriores NVARCHAR(MAX),
+    DatosNuevos NVARCHAR(MAX),
+    FOREIGN KEY (EventoID) REFERENCES dbo.EventosAuditoria(EventoID)
+);
+
+-- ============================================
+-- PASO 3: Procedimientos de registro
+-- ============================================
+CREATE PROCEDURE dbo.sp_RegistrarEvento
+    @TipoEvento VARCHAR(50), @Usuario NVARCHAR(100) = NULL,
+    @Objeto NVARCHAR(500) = NULL, @Accion VARCHAR(50) = NULL,
+    @Detalles NVARCHAR(MAX) = NULL, @NivelSeveridad VARCHAR(20) = 'Info'
+AS
+BEGIN
+    INSERT INTO dbo.EventosAuditoria
+    (TipoEvento, Usuario, Objeto, Accion, Detalles, IPCliente, Aplicacion, NivelSeveridad)
+    VALUES (@TipoEvento, ISNULL(@Usuario, SYSTEM_USER), @Objeto, @Accion, @Detalles,
+            CONNECTIONPROPERTY('client_net_address'), APP_NAME(), @NivelSeveridad);
+    RETURN SCOPE_IDENTITY();
+END;
+
+-- ============================================
+-- PASO 4: Triggers en la base de datos principal
+-- ============================================
+USE GradosTitulos;
+GO
+
+-- Trigger DDL para auditoría de objetos
+CREATE TRIGGER trg_Audit_DDL ON DATABASE
+FOR CREATE_TABLE, ALTER_TABLE, DROP_TABLE,
+    CREATE_PROCEDURE, ALTER_PROCEDURE, DROP_PROCEDURE
+AS
+BEGIN
+    DECLARE @EventoData XML = EVENTDATA();
+    DECLARE @TipoEvento VARCHAR(50) = @EventoData.value('(/EVENT_INSTANCE/EventType)[1]', 'VARCHAR(50)');
+    DECLARE @Objeto NVARCHAR(500) = @EventoData.value('(/EVENT_INSTANCE/ObjectName)[1]', 'NVARCHAR(500)');
+    
+    IF @TipoEvento LIKE '%DROP%'
+    BEGIN
+        EXEC AuditoriaSistema.dbo.sp_RegistrarEvento
+            @TipoEvento = 'OBJECT_DELETE',
+            @Objeto = @Objeto,
+            @Accion = @TipoEvento,
+            @Detalles = @EventoData.value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]', 'NVARCHAR(MAX)'),
+            @NivelSeveridad = 'Critical';
+    END
+END;
+
+-- ============================================
+-- PASO 5: Trigger de servidor para logins
+-- ============================================
+USE master;
+GO
+CREATE TRIGGER trg_Audit_Logins ON ALL SERVER FOR LOGON
+AS
+BEGIN
+    EXEC AuditoriaSistema.dbo.sp_RegistrarEvento
+        @TipoEvento = 'LOGIN',
+        @Usuario = ORIGINAL_LOGIN(),
+        @Detalles = CONCAT('Login desde IP: ', CONNECTIONPROPERTY('client_net_address')),
+        @NivelSeveridad = 'Info';
+END;
+
+-- ============================================
+-- PASO 6: Reportes
+-- ============================================
+USE AuditoriaSistema;
+GO
+CREATE PROCEDURE dbo.sp_ReporteAuditoria
+    @FechaInicio DATETIME = NULL, @FechaFin DATETIME = NULL
+AS
+BEGIN
+    IF @FechaInicio IS NULL SET @FechaInicio = DATEADD(DAY, -7, GETDATE());
+    IF @FechaFin IS NULL SET @FechaFin = GETDATE();
+    
+    SELECT TipoEvento, FechaEvento, Usuario, Objeto, Accion, Detalles, NivelSeveridad
+    FROM dbo.EventosAuditoria
+    WHERE FechaEvento BETWEEN @FechaInicio AND @FechaFin
+    ORDER BY FechaEvento DESC;
+END;`);
+
+        // ============================================================
+        // LOGICA DE LA PÁGINA
+        // ============================================================
+
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = {
+            tab1: document.getElementById('tab1'),
+            tab2: document.getElementById('tab2'),
+            tab3: document.getElementById('tab3'),
+            tab4: document.getElementById('tab4'),
+            tab5: document.getElementById('tab5'),
+            tab6: document.getElementById('tab6')
+        };
+
+        const detalleContainer = document.getElementById('detalleContainer');
+        const detalleTitulo = document.getElementById('detalleTitulo');
+        const detalleScript = document.getElementById('detalleScript');
+        const cerrarDetalle = document.getElementById('cerrarDetalle');
+
+        // Cambio de tabs
+        tabs.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabs.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const tabId = this.dataset.tab;
+                Object.keys(contents).forEach(key => {
+                    contents[key].classList.toggle('active', key === tabId);
+                });
+
+                // Ocultar detalle al cambiar de tab
+                detalleContainer.classList.remove('visible');
+            });
+        });
+
+        // Botones "Ver Script"
+        document.querySelectorAll('.btn-detalle').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const tema = parseInt(this.dataset.tema);
+                const proyecto = parseInt(this.dataset.proyecto);
+                const key = tema + '-' + proyecto;
+
+                const data = scripts[key];
+                if (data) {
+                    detalleTitulo.textContent = data.titulo;
+                    detalleScript.textContent = data.codigo;
+                    detalleContainer.classList.add('visible');
+
+                    // Scroll al detalle
+                    detalleContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    detalleTitulo.textContent = 'Script no encontrado';
+                    detalleScript.textContent = '-- El script para este proyecto aún no está disponible.';
+                    detalleContainer.classList.add('visible');
+                }
+            });
+        });
+
+        // Cerrar detalle
+        cerrarDetalle.addEventListener('click', function() {
+            detalleContainer.classList.remove('visible');
+        });
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                detalleContainer.classList.remove('visible');
+            }
+        });
+
+        // Clic fuera del detalle (en el fondo) para cerrar
+        document.addEventListener('click', function(e) {
+            if (detalleContainer.classList.contains('visible')) {
+                const rect = detalleContainer.getBoundingClientRect();
+                const isInside = e.clientX >= rect.left && e.clientX <= rect.right &&
+                                 e.clientY >= rect.top && e.clientY <= rect.bottom;
+                // Si no se hizo clic dentro y no se hizo clic en un botón de detalle
+                if (!isInside && !e.target.closest('.btn-detalle')) {
+                    detalleContainer.classList.remove('visible');
+                }
+            }
+        });
+
+        console.log('✅ Página de Seguridad y Auditoría SQL cargada correctamente.');
+        console.log(`📦 ${Object.keys(scripts).length} scripts disponibles.`);
+
+    })();
+</script>
+
+</body>
+</html>

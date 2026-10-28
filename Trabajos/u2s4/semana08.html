@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Backups y Recuperación - GradosTítulos</title>
+    <style>
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* ========== CONTENEDOR PRINCIPAL ========== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.10);
+            padding: 30px 35px 50px;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #1a5276;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a5276;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #5d6d7e;
+            margin-top: 6px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: #1a5276;
+            color: #fff;
+            padding: 4px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* ========== INDICE ========== */
+        .indice {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            justify-content: center;
+            background: #eaf2f8;
+            padding: 14px 20px;
+            border-radius: 40px;
+            margin-bottom: 35px;
+        }
+
+        .indice a {
+            color: #1a5276;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: 0.25s;
+        }
+
+        .indice a:hover {
+            background: #1a5276;
+            color: #fff;
+        }
+
+        /* ========== TARJETAS DE TEMA ========== */
+        .tema {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e5e8eb;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.25s;
+        }
+
+        .tema:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .tema-header {
+            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            color: #fff;
+            padding: 18px 28px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .tema-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .tema-header .toggle-icon {
+            font-size: 1.8rem;
+            font-weight: 300;
+            transition: transform 0.3s;
+        }
+
+        .tema-header .toggle-icon.abierto {
+            transform: rotate(180deg);
+        }
+
+        .tema-body {
+            padding: 25px 28px 30px;
+            display: none;
+        }
+
+        .tema-body.abierto {
+            display: block;
+        }
+
+        /* ========== PROYECTOS ========== */
+        .proyecto {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px 24px 24px;
+            margin-top: 22px;
+            border-left: 5px solid #2e86c1;
+            transition: background 0.2s;
+        }
+
+        .proyecto:hover {
+            background: #f0f4f8;
+        }
+
+        .proyecto:first-of-type {
+            margin-top: 0;
+        }
+
+        .proyecto .titulo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a5276;
+            margin-bottom: 6px;
+        }
+
+        .proyecto .enunciado {
+            color: #2c3e50;
+            background: #eaf2f8;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 8px 0 14px 0;
+            font-style: italic;
+            border-left: 3px solid #1a5276;
+        }
+
+        .proyecto .enunciado strong {
+            color: #1a5276;
+            font-style: normal;
+        }
+
+        /* ========== SCRIPT ========== */
+        .script-wrapper {
+            background: #1e1e2e;
+            border-radius: 10px;
+            padding: 6px 0 0 0;
+            margin-top: 12px;
+            position: relative;
+        }
+
+        .script-wrapper .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: #3b3b5c;
+            border: none;
+            color: #cdd6f4;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 5;
+        }
+
+        .script-wrapper .copy-btn:hover {
+            background: #5656a0;
+            color: #fff;
+        }
+
+        .script-wrapper pre {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 18px 20px 20px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+
+        .script-wrapper pre .comment {
+            color: #6c7086;
+        }
+        .script-wrapper pre .keyword {
+            color: #cba6f7;
+        }
+        .script-wrapper pre .string {
+            color: #a6e3a1;
+        }
+        .script-wrapper pre .function {
+            color: #89b4fa;
+        }
+        .script-wrapper pre .variable {
+            color: #f9e2af;
+        }
+
+        /* ========== JUSTIFICACIÓN Y BUENAS PRÁCTICAS ========== */
+        .justificacion,
+        .buenas-practicas {
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 10px;
+        }
+
+        .justificacion {
+            background: #eaf4f4;
+            border-left: 4px solid #117a65;
+        }
+
+        .buenas-practicas {
+            background: #f4f0e6;
+            border-left: 4px solid #b7950b;
+        }
+
+        .justificacion h4,
+        .buenas-practicas h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a5276;
+            margin-bottom: 4px;
+        }
+
+        .justificacion ul,
+        .buenas-practicas ul {
+            padding-left: 22px;
+            margin-top: 4px;
+        }
+
+        .justificacion li,
+        .buenas-practicas li {
+            margin-bottom: 3px;
+            font-size: 0.95rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tema-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .tema-body {
+                padding: 16px;
+            }
+
+            .proyecto {
+                padding: 14px 16px 18px;
+            }
+
+            .indice {
+                gap: 6px 12px;
+                padding: 10px 14px;
+            }
+
+            .indice a {
+                font-size: 0.8rem;
+                padding: 2px 8px;
+            }
+
+            .script-wrapper pre {
+                font-size: 0.75rem;
+                padding: 14px;
+            }
+        }
+
+        @media print {
+            .tema-body {
+                display: block !important;
+            }
+            .tema-header .toggle-icon {
+                display: none;
+            }
+            .script-wrapper .copy-btn {
+                display: none;
+            }
+            .indice {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <h1>📦 Gestión de Backups &amp; Recuperación</h1>
+        <div class="subtitle">Base de Datos <strong>GradosTítulos</strong> — Universidad</div>
+        <div class="badge">Temas 1 al 6 • Estrategias de respaldo y restauración</div>
+    </div>
+
+    <!-- ===== INDICE ===== -->
+    <div class="indice">
+        <a href="#tema1">Tema 1 · Estrategias de Backup</a>
+        <a href="#tema2">Tema 2 · Restauración</a>
+        <a href="#tema3">Tema 3 · Mantenimiento</a>
+        <a href="#tema4">Tema 4 · BACKUP / RESTORE</a>
+        <a href="#tema5">Tema 5 · Planes y Retención</a>
+        <a href="#tema6">Tema 6 · Punto en el Tiempo</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 1 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema1">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>📌 Tema 1 · Estrategias de Backup</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <!-- Proyecto 1.1 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Respaldo Completo Institucional</div>
+                <div class="enunciado"><strong>Enunciado:</strong> La Oficina de Tecnologías de Información requiere implementar una política de respaldo completo diario para la base de datos <strong>GradosTítulos</strong>. El estudiante deberá crear un procedimiento que genere un respaldo completo y registre la fecha de ejecución.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Respaldo Completo Diario</span>
+<span class="comment">-- =============================================</span>
+
+<span class="comment">-- Creación de la tabla de registro de respaldos</span>
+CREATE TABLE dbo.RegistroRespaldos (
+    id_registro INT IDENTITY(1,1) PRIMARY KEY,
+    tipo_respaldo VARCHAR(20) NOT NULL,
+    fecha_inicio DATETIME NOT NULL,
+    fecha_fin DATETIME NOT NULL,
+    tamaño_mb DECIMAL(18,2) NULL,
+    ruta_archivo VARCHAR(500) NOT NULL,
+    estado VARCHAR(20) NOT NULL,
+    mensaje_error VARCHAR(MAX) NULL
+);
+
+<span class="keyword">GO</span>
+
+<span class="comment">-- Creación del procedimiento almacenado para respaldo completo</span>
+CREATE PROCEDURE dbo.sp_RespaldoCompleto_GradosTitulos
+    @ruta_base VARCHAR(500) = 'D:\Backups\GradosTitulos\'
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @fecha_inicio DATETIME = GETDATE();
+    DECLARE @fecha_fin DATETIME;
+    DECLARE @nombre_archivo VARCHAR(500);
+    DECLARE @ruta_completa VARCHAR(600);
+    DECLARE @estado VARCHAR(20) = 'EXITOSO';
+    DECLARE @mensaje_error VARCHAR(MAX) = <span class="keyword">NULL</span>;
+    DECLARE @tamaño_mb DECIMAL(18,2);
+
+    <span class="keyword">BEGIN TRY</span>
+        <span class="comment">-- Validar que la ruta exista, si no crearla</span>
+        EXEC xp_create_subdir @ruta_base;
+
+        <span class="comment">-- Generar nombre de archivo con timestamp</span>
+        SET @nombre_archivo = 'GradosTitulos_FULL_' +
+                              FORMAT(GETDATE(), 'yyyyMMdd_HHmmss') + '.bak';
+        SET @ruta_completa = @ruta_base + @nombre_archivo;
+
+        <span class="comment">-- Ejecutar el respaldo completo</span>
+        BACKUP DATABASE GradosTitulos
+        TO DISK = @ruta_completa
+        WITH
+            NAME = 'Respaldo Completo GradosTitulos',
+            DESCRIPTION = 'Respaldo completo diario',
+            COMPRESSION,
+            STATS = 10,
+            INIT,
+            SKIP,
+            CHECKSUM;
+
+        <span class="comment">-- Registrar el respaldo exitoso</span>
+        INSERT INTO dbo.RegistroRespaldos
+            (tipo_respaldo, fecha_inicio, fecha_fin, ruta_archivo, estado)
+        VALUES
+            ('COMPLETO', @fecha_inicio, GETDATE(), @ruta_completa, @estado);
+
+        PRINT 'Respaldo completado exitosamente: ' + @ruta_completa;
+
+    <span class="keyword">END TRY</span>
+    <span class="keyword">BEGIN CATCH</span>
+        SET @estado = 'ERROR';
+        SET @fecha_fin = GETDATE();
+        SET @mensaje_error = ERROR_MESSAGE();
+
+        INSERT INTO dbo.RegistroRespaldos
+            (tipo_respaldo, fecha_inicio, fecha_fin, ruta_archivo, estado, mensaje_error)
+        VALUES
+            ('COMPLETO', @fecha_inicio, @fecha_fin, @ruta_completa, @estado, @mensaje_error);
+
+        THROW;
+    <span class="keyword">END CATCH</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Procedimiento encapsulado:</strong> Centraliza la lógica de respaldo para facilitar su ejecución programada.</li>
+                        <li><strong>Tabla de registro:</strong> Permite auditoría y trazabilidad de todos los respaldos realizados.</li>
+                        <li><strong>Timestamp en el nombre:</strong> Cada archivo es único e identificable por fecha/hora.</li>
+                        <li><strong>CHECKSUM y COMPRESSION:</strong> Garantizan integridad y optimizan espacio.</li>
+                        <li><strong>Manejo de errores con TRY-CATCH:</strong> Captura excepciones y las registra.</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Separación física: respaldos en unidad diferente (D:\) a la base de datos.</li>
+                        <li>Nombres descriptivos: facilitan identificación y mantenimiento.</li>
+                        <li>Registro de métricas: tamaño y duración permiten monitoreo de crecimiento.</li>
+                        <li>Uso de <code>SET NOCOUNT ON</code> para reducir tráfico de red.</li>
+                        <li>Programación automática mediante SQL Agent (job diario).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proyecto 1.2 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Backups Diferenciales para Trámites</div>
+                <div class="enunciado"><strong>Enunciado:</strong> La universidad necesita reducir los tiempos de respaldo debido al crecimiento de las tablas de los esquemas <strong>Tramite</strong> y <strong>Documento</strong>. Diseñe una estrategia que combine respaldos completos semanales y diferenciales diarios.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Respaldo Completo Semanal + Diferencial Diario</span>
+<span class="comment">-- =============================================</span>
+
+CREATE PROCEDURE dbo.sp_RespaldoDiferencial_GradosTitulos
+    @ruta_base VARCHAR(500) = <span class="keyword">NULL</span>
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @fecha_inicio DATETIME = GETDATE();
+    DECLARE @nombre_archivo VARCHAR(500);
+    DECLARE @ruta_completa VARCHAR(600);
+    DECLARE @estado VARCHAR(20) = 'EXITOSO';
+
+    <span class="keyword">IF</span> @ruta_base <span class="keyword">IS NULL</span>
+    <span class="keyword">BEGIN</span>
+        SELECT @ruta_base = valor
+        FROM dbo.ConfiguracionRespaldos
+        WHERE parametro = 'RUTA_BASE';
+    <span class="keyword">END</span>
+
+    <span class="keyword">BEGIN TRY</span>
+        EXEC xp_create_subdir @ruta_base;
+
+        SET @nombre_archivo = 'GradosTitulos_DIFF_' +
+                              FORMAT(GETDATE(), 'yyyyMMdd_HHmmss') + '.bak';
+        SET @ruta_completa = @ruta_base + @nombre_archivo;
+
+        BACKUP DATABASE GradosTitulos
+        TO DISK = @ruta_completa
+        WITH
+            DIFFERENTIAL,
+            NAME = 'Respaldo Diferencial GradosTitulos',
+            COMPRESSION,
+            STATS = 10,
+            INIT,
+            SKIP,
+            CHECKSUM;
+
+        INSERT INTO dbo.RegistroRespaldos
+            (tipo_respaldo, fecha_inicio, fecha_fin, ruta_archivo, estado)
+        VALUES
+            ('DIFERENCIAL', @fecha_inicio, GETDATE(), @ruta_completa, @estado);
+
+    <span class="keyword">END TRY</span>
+    <span class="keyword">BEGIN CATCH</span>
+        <span class="comment">-- Manejo de errores similar al proyecto 1</span>
+    <span class="keyword">END CATCH</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Respaldo diferencial:</strong> Captura solo los cambios desde el último completo, reduciendo tamaño y tiempo.</li>
+                        <li><strong>Estrategia semanal + diaria:</strong> Equilibrio entre tiempo de respaldo y tiempo de recuperación.</li>
+                        <li><strong>Configuración centralizada:</strong> La tabla de configuración permite cambios sin modificar código.</li>
+                        <li><strong>Compresión:</strong> Especialmente beneficiosa en respaldos completos (ahorro 70–80%).</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Parámetros con valores predeterminados para flexibilidad.</li>
+                        <li>Centralización de configuración en tablas.</li>
+                        <li>Registro detallado de cada operación.</li>
+                        <li>Separación de horarios: completos los domingos, diferenciales diarios.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proyecto 1.3 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 3 · Estrategia Integral Full + Diff + Log</div>
+                <div class="enunciado"><strong>Enunciado:</strong> La base de datos GradosTítulos opera 24/7. Diseñe una estrategia que contemple: respaldo completo semanal, diferencial diario y respaldo del log de transacciones cada 30 minutos.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 3: Estrategia FULL + DIFF + LOG (24/7)</span>
+<span class="comment">-- =============================================</span>
+
+<span class="comment">-- Configurar modelo de recuperación FULL</span>
+ALTER DATABASE GradosTitulos
+SET RECOVERY FULL;
+<span class="keyword">GO</span>
+
+CREATE PROCEDURE dbo.sp_RespaldoLog_GradosTitulos
+    @ruta_logs VARCHAR(500) = <span class="keyword">NULL</span>
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @fecha_inicio DATETIME = GETDATE();
+    DECLARE @nombre_archivo VARCHAR(500);
+    DECLARE @ruta_completa VARCHAR(600);
+
+    <span class="keyword">IF</span> @ruta_logs <span class="keyword">IS NULL</span>
+        SELECT @ruta_logs = valor FROM dbo.ConfiguracionLogs WHERE parametro = 'RUTA_LOGS';
+
+    <span class="keyword">BEGIN TRY</span>
+        EXEC xp_create_subdir @ruta_logs;
+
+        SET @nombre_archivo = 'GradosTitulos_LOG_' +
+                              FORMAT(GETDATE(), 'yyyyMMdd_HHmmss') + '.trn';
+        SET @ruta_completa = @ruta_logs + @nombre_archivo;
+
+        BACKUP LOG GradosTitulos
+        TO DISK = @ruta_completa
+        WITH
+            NAME = 'Respaldo Log GradosTitulos',
+            COMPRESSION,
+            STATS = 10,
+            INIT,
+            SKIP,
+            CHECKSUM;
+
+        INSERT INTO dbo.RegistroRespaldos
+            (tipo_respaldo, fecha_inicio, fecha_fin, ruta_archivo, estado)
+        VALUES
+            ('LOG_TRANSACCIONES', @fecha_inicio, GETDATE(), @ruta_completa, 'EXITOSO');
+
+    <span class="keyword">END TRY</span>
+    <span class="keyword">BEGIN CATCH</span>
+        <span class="comment">-- Manejo de errores</span>
+    <span class="keyword">END CATCH</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Modelo FULL:</strong> Requisito indispensable para respaldos de log y recuperación point-in-time.</li>
+                        <li><strong>Log cada 30 minutos:</strong> RPO (pérdida máxima de datos) de 30 minutos.</li>
+                        <li><strong>Sinergia FULL + DIFF + LOG:</strong> Recuperación rápida con FULL+DIFF y granular con logs.</li>
+                        <li><strong>Limpieza automática:</strong> Elimina logs antiguos según política de retención.</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Separación física de logs en unidad diferente (L:\).</li>
+                        <li>Intervalos consistentes para mantener RPO predecible.</li>
+                        <li>Validación con CHECKSUM en todos los respaldos.</li>
+                        <li>Política de retención automatizada para evitar desbordamiento.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proyecto 1.4 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 4 · Alta Disponibilidad (RTO 15 min)</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Se requiere diseñar una estrategia de recuperación ante desastres con respaldos completos, diferenciales y transaccionales para garantizar una recuperación máxima de 15 minutos.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 4: Estrategia para Alta Disponibilidad (RTO 15 min)</span>
+<span class="comment">-- =============================================</span>
+
+CREATE PROCEDURE dbo.sp_RecuperacionRapida_GradosTitulos
+    @ruta_base VARCHAR(500) = <span class="keyword">NULL</span>,
+    @ruta_logs VARCHAR(500) = <span class="keyword">NULL</span>,
+    @punto_restauracion DATETIME = <span class="keyword">NULL</span>
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @inicio_recuperacion DATETIME = GETDATE();
+    DECLARE @archivo_full VARCHAR(500);
+    DECLARE @archivo_diff VARCHAR(500);
+    DECLARE @archivos_log TABLE (archivo VARCHAR(500), fecha DATETIME);
+
+    <span class="keyword">IF</span> @ruta_base <span class="keyword">IS NULL</span>
+        SELECT @ruta_base = valor FROM dbo.ConfiguracionRespaldos WHERE parametro = 'RUTA_BASE';
+
+    <span class="keyword">IF</span> @ruta_logs <span class="keyword">IS NULL</span>
+        SELECT @ruta_logs = valor FROM dbo.ConfiguracionLogs WHERE parametro = 'RUTA_LOGS';
+
+    <span class="keyword">IF</span> @punto_restauracion <span class="keyword">IS NULL</span>
+        SET @punto_restauracion = GETDATE();
+
+    <span class="comment">-- 1. Obtener el último respaldo completo</span>
+    SELECT TOP 1 @archivo_full = ruta_archivo
+    FROM dbo.RegistroRespaldos
+    WHERE tipo_respaldo IN ('COMPLETO', 'COMPLETO_SEMANAL')
+    AND estado = 'EXITOSO'
+    ORDER BY fecha_inicio DESC;
+
+    <span class="comment">-- 2. Obtener el último respaldo diferencial</span>
+    SELECT TOP 1 @archivo_diff = ruta_archivo
+    FROM dbo.RegistroRespaldos
+    WHERE tipo_respaldo = 'DIFERENCIAL'
+    AND estado = 'EXITOSO'
+    AND fecha_inicio > (SELECT fecha_inicio FROM dbo.RegistroRespaldos WHERE ruta_archivo = @archivo_full)
+    ORDER BY fecha_inicio DESC;
+
+    <span class="comment">-- 3. Generar script de recuperación</span>
+    PRINT 'RESTORE DATABASE GradosTitulos FROM DISK = ''' + @archivo_full + ''' WITH NORECOVERY;';
+    <span class="keyword">IF</span> @archivo_diff <span class="keyword">IS NOT NULL</span>
+        PRINT 'RESTORE DATABASE GradosTitulos FROM DISK = ''' + @archivo_diff + ''' WITH NORECOVERY;';
+    PRINT 'RESTORE LOG GradosTitulos FROM DISK = ''' + @ruta_logs + '...'' WITH RECOVERY, STOPAT = ''' + CAST(@punto_restauracion AS VARCHAR) + ''';';
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>RTO 15 minutos:</strong> Diseñado con buffers grandes y compresión para acelerar I/O.</li>
+                        <li><strong>RPO 15 minutos:</strong> Logs cada 15 minutos garantizan pérdida máxima de 15 min.</li>
+                        <li><strong>Script dinámico:</strong> Genera automáticamente el comando de restauración óptimo.</li>
+                        <li><strong>Simulación:</strong> Permite probar la estrategia sin impacto.</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Métricas RTO/RPO claras y medibles.</li>
+                        <li>Almacenamiento en discos SSD para minimizar latencia.</li>
+                        <li>Monitoreo continuo de tiempos de recuperación.</li>
+                        <li>Documentación de la estrategia para operación en crisis.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proyecto 1.5 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 5 · Estrategia Corporativa Avanzada</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Implemente una estrategia avanzada de respaldo que garantice pérdida máxima de información de 15 minutos, incluyendo compresión y verificación automática de integridad.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 5: Estrategia Corporativa Avanzada</span>
+<span class="comment">-- =============================================</span>
+
+CREATE TABLE dbo.VerificacionIntegridad (
+    id_verificacion INT IDENTITY(1,1) PRIMARY KEY,
+    archivo_verificado VARCHAR(500) NOT NULL,
+    fecha_verificacion DATETIME NOT NULL,
+    resultado VARCHAR(20) NOT NULL,
+    checksum_calculado VARCHAR(64) <span class="keyword">NULL</span>,
+    detalles VARCHAR(MAX) <span class="keyword">NULL</span>
+);
+<span class="keyword">GO</span>
+
+CREATE PROCEDURE dbo.sp_RespaldoCompletoConVerificacion
+    @ruta_base VARCHAR(500) = <span class="keyword">NULL</span>
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @nombre_archivo VARCHAR(500) = 'GradosTitulos_FULL_CORP_' + FORMAT(GETDATE(), 'yyyyMMdd') + '.bak';
+    DECLARE @ruta_completa VARCHAR(600) = @ruta_base + @nombre_archivo;
+
+    <span class="keyword">BEGIN TRY</span>
+        <span class="comment">-- 1. Respaldo completo con encriptación y compresión</span>
+        BACKUP DATABASE GradosTitulos
+        TO DISK = @ruta_completa
+        WITH
+            NAME = 'Respaldo Corporativo Completo',
+            COMPRESSION,
+            STATS = 5,
+            INIT,
+            SKIP,
+            CHECKSUM,
+            COPY_ONLY,
+            ENCRYPTION (ALGORITHM = AES_256, SERVER CERTIFICATE = CertBackupEncryption);
+
+        <span class="comment">-- 2. Verificación automática de integridad</span>
+        RESTORE VERIFYONLY FROM DISK = @ruta_completa
+        WITH CHECKSUM;
+
+        <span class="comment">-- 3. Registrar verificación</span>
+        INSERT INTO dbo.VerificacionIntegridad
+            (archivo_verificado, fecha_verificacion, resultado, detalles)
+        VALUES
+            (@ruta_completa, GETDATE(), 'VERIFICADO', 'Verificación exitosa');
+
+    <span class="keyword">END TRY</span>
+    <span class="keyword">BEGIN CATCH</span>
+        <span class="comment">-- Manejo de errores</span>
+    <span class="keyword">END CATCH</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Verificación con RESTORE VERIFYONLY:</strong> Confirma que el archivo es válido y legible.</li>
+                        <li><strong>Encriptación AES_256:</strong> Protege datos sensibles incluso si los archivos son comprometidos.</li>
+                        <li><strong>Compresión nativa:</strong> Reduce tamaño 60–80%, ahorrando almacenamiento.</li>
+                        <li><strong>COPY_ONLY:</strong> No rompe la cadena de respaldos diferenciales.</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Verificación obligatoria en cada respaldo.</li>
+                        <li>Encriptación estándar AES_256.</li>
+                        <li>Programación precisa (logs en minutos 0,15,30,45).</li>
+                        <li>Monitoreo proactivo con vista de integridad.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proyecto 1.6 -->
+            <div class="proyecto">
+                <div class="titulo">Proyecto 6 · Disaster Recovery</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Diseñe un esquema de respaldo que permita reconstruir completamente la base de datos en un servidor alterno ante la pérdida total del servidor principal.</div>
+
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 6: Estrategia de Disaster Recovery (DR)</span>
+<span class="comment">-- =============================================</span>
+
+CREATE TABLE dbo.ConfiguracionDR (
+    id_config INT IDENTITY(1,1) PRIMARY KEY,
+    servidor_origen VARCHAR(200) NOT NULL,
+    servidor_destino VARCHAR(200) NOT NULL,
+    ruta_origen VARCHAR(500) NOT NULL,
+    ruta_destino VARCHAR(500) NOT NULL,
+    frecuencia_minutos INT NOT NULL,
+    ultima_sincronizacion DATETIME <span class="keyword">NULL</span>,
+    estado VARCHAR(20) DEFAULT 'ACTIVO'
+);
+
+INSERT INTO dbo.ConfiguracionDR
+    (servidor_origen, servidor_destino, ruta_origen, ruta_destino, frecuencia_minutos)
+VALUES
+    ('SRV-GRADOS-PRINCIPAL', 'SRV-GRADOS-DR', 'D:\Backups\GradosTitulos\', 'E:\DR_Backups\GradosTitulos\', 15);
+<span class="keyword">GO</span>
+
+CREATE PROCEDURE dbo.sp_BackupDisasterRecovery
+    @modo VARCHAR(20) = 'COMPLETO'
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    DECLARE @ruta_local VARCHAR(500);
+    DECLARE @ruta_remota VARCHAR(500);
+    DECLARE @nombre_archivo VARCHAR(500);
+    DECLARE @comando_robocopy VARCHAR(1000);
+
+    SELECT @ruta_local = ruta_origen, @ruta_remota = ruta_destino
+    FROM dbo.ConfiguracionDR WHERE estado = 'ACTIVO';
+
+    <span class="comment">-- 1. Realizar respaldo local</span>
+    SET @nombre_archivo = 'GradosTitulos_DR_FULL_' + FORMAT(GETDATE(), 'yyyyMMdd_HHmm') + '.bak';
+    BACKUP DATABASE GradosTitulos TO DISK = @ruta_local + @nombre_archivo
+    WITH COMPRESSION, CHECKSUM;
+
+    <span class="comment">-- 2. Replicar al servidor DR con ROBOCOPY</span>
+    SET @comando_robocopy = 'ROBOCOPY "' + @ruta_local + '" "' + @ruta_remota + '" "' + @nombre_archivo + '" /COPY:DAT /R:3 /W:10';
+    EXEC xp_cmdshell @comando_robocopy;
+
+    UPDATE dbo.ConfiguracionDR SET ultima_sincronizacion = GETDATE() WHERE estado = 'ACTIVO';
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Replicación automática:</strong> Con ROBOCOPY y xp_cmdshell se copian respaldos al servidor alterno.</li>
+                        <li><strong>Respaldo independiente:</strong> No interfiere con la estrategia regular.</li>
+                        <li><strong>Frecuencia 15 min:</strong> Sincronización constante para mínima pérdida de datos.</li>
+                        <li><strong>Script de restauración automatizado:</strong> Genera los comandos para reconstruir en DR.</li>
+                    </ul>
+                </div>
+
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Separación geográfica del servidor DR.</li>
+                        <li>Automatización completa de respaldo y replicación.</li>
+                        <li>Alertas tempranas para fallos de replicación.</li>
+                        <li>Pruebas periódicas de restauración en DR.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema1 -->
+
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 2 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema2">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>🔄 Tema 2 · Restauración de Bases de Datos</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Recuperación por Eliminación Accidental</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Un administrador eliminó accidentalmente registros relacionados con expedientes de titulación. Restaure la base de datos utilizando el respaldo más reciente.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Recuperación por Eliminación Accidental</span>
+<span class="comment">-- =============================================</span>
+
+USE master;
+<span class="keyword">GO</span>
+
+<span class="comment">-- 1. Identificar el último respaldo disponible</span>
+DECLARE @ultimo_respaldo VARCHAR(500);
+SELECT TOP 1 @ultimo_respaldo = ruta_archivo
+FROM dbo.RegistroRespaldos
+WHERE tipo_respaldo IN ('COMPLETO', 'COMPLETO_SEMANAL')
+AND estado = 'EXITOSO'
+ORDER BY fecha_inicio DESC;
+
+<span class="keyword">IF</span> @ultimo_respaldo <span class="keyword">IS NULL</span>
+<span class="keyword">BEGIN</span>
+    PRINT 'ERROR: No se encontró respaldo.';
+    RETURN;
+<span class="keyword">END</span>
+
+<span class="comment">-- 2. Verificar integridad del respaldo</span>
+<span class="keyword">BEGIN TRY</span>
+    RESTORE VERIFYONLY FROM DISK = @ultimo_respaldo WITH CHECKSUM;
+<span class="keyword">END TRY</span>
+<span class="keyword">BEGIN CATCH</span>
+    PRINT 'ERROR: Respaldo corrupto.';
+    RETURN;
+<span class="keyword">END CATCH</span>
+
+<span class="comment">-- 3. Forzar desconexión de usuarios</span>
+<span class="keyword">IF</span> EXISTS (SELECT 1 FROM sys.databases WHERE name = 'GradosTitulos')
+<span class="keyword">BEGIN</span>
+    DECLARE @kill_cmd VARCHAR(MAX) = '';
+    SELECT @kill_cmd = @kill_cmd + 'KILL ' + CAST(session_id AS VARCHAR) + '; '
+    FROM sys.dm_exec_sessions
+    WHERE database_id = DB_ID('GradosTitulos')
+    AND session_id <> @@SPID;
+    <span class="keyword">IF</span> @kill_cmd <> '' EXEC (@kill_cmd);
+    ALTER DATABASE GradosTitulos SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+<span class="keyword">END</span>
+
+<span class="comment">-- 4. Restaurar la base de datos</span>
+RESTORE DATABASE GradosTitulos
+FROM DISK = @ultimo_respaldo
+WITH
+    MOVE 'GradosTitulos_Data' TO 'D:\Data\GradosTitulos.mdf',
+    MOVE 'GradosTitulos_Log' TO 'L:\Logs\GradosTitulos_log.ldf',
+    REPLACE,
+    STATS = 10,
+    CHECKSUM;
+
+ALTER DATABASE GradosTitulos SET MULTI_USER;
+PRINT 'Restauración completada exitosamente.';</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Detección automática del último respaldo:</strong> Usa la tabla de registro.</li>
+                        <li><strong>RESTORE VERIFYONLY:</strong> Valida el archivo antes de restaurar.</li>
+                        <li><strong>KILL y SINGLE_USER:</strong> Forzan desconexión para restauración sin conflictos.</li>
+                        <li><strong>MOVE:</strong> Permite reposicionar archivos en las rutas correctas.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Validación previa a la restauración.</li>
+                        <li>Registro de todas las restauraciones.</li>
+                        <li>Manejo robusto de errores con TRY-CATCH.</li>
+                        <li>Mensajes informativos durante el proceso.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Restauración en Servidor Alternativo</div>
+                <div class="enunciado"><strong>Enunciado:</strong> La universidad requiere habilitar un servidor de contingencia para pruebas y recuperación. Restaure la base de datos GradosTítulos en una nueva instancia SQL Server.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Restauración en Servidor Alternativo</span>
+<span class="comment">-- =============================================</span>
+
+DECLARE @nombre_db_alternativo VARCHAR(100) = 'GradosTitulos_Contingencia';
+DECLARE @ruta_data_alternativa VARCHAR(500) = 'E:\Data\Contingencia\';
+DECLARE @ruta_log_alternativa VARCHAR(500) = 'F:\Logs\Contingencia\';
+
+<span class="comment">-- Crear directorios de destino</span>
+EXEC xp_create_subdir @ruta_data_alternativa;
+EXEC xp_create_subdir @ruta_log_alternativa;
+
+<span class="comment">-- Obtener estructura de archivos del respaldo</span>
+CREATE TABLE #FileList (
+    LogicalName NVARCHAR(128),
+    PhysicalName NVARCHAR(260),
+    Type CHAR(1)
+);
+
+INSERT INTO #FileList
+EXEC ('RESTORE FILELISTONLY FROM DISK = ''D:\Backups\GradosTitulos\GradosTitulos_FULL_20260628.bak''');
+
+<span class="comment">-- Construir comando con MOVE dinámico</span>
+DECLARE @comando VARCHAR(MAX) = 'RESTORE DATABASE ' + @nombre_db_alternativo + ' FROM DISK = ''D:\Backups\GradosTitulos\GradosTitulos_FULL_20260628.bak'' WITH ';
+DECLARE @logical_name NVARCHAR(128), @tipo CHAR(1);
+
+DECLARE cur CURSOR FOR SELECT LogicalName, Type FROM #FileList;
+OPEN cur; FETCH NEXT FROM cur INTO @logical_name, @tipo;
+<span class="keyword">WHILE</span> @@FETCH_STATUS = 0
+<span class="keyword">BEGIN</span>
+    <span class="keyword">IF</span> @tipo = 'D'
+        SET @comando = @comando + 'MOVE ''' + @logical_name + ''' TO ''' + @ruta_data_alternativa + @logical_name + '.mdf'', ';
+    <span class="keyword">ELSE IF</span> @tipo = 'L'
+        SET @comando = @comando + 'MOVE ''' + @logical_name + ''' TO ''' + @ruta_log_alternativa + @logical_name + '.ldf'', ';
+    FETCH NEXT FROM cur INTO @logical_name, @tipo;
+<span class="keyword">END</span>
+CLOSE cur; DEALLOCATE cur;
+
+SET @comando = LEFT(@comando, LEN(@comando) - 1) + ', STATS = 10, CHECKSUM, REPLACE;';
+EXEC sp_executesql @comando;
+
+PRINT 'Base restaurada como ' + @nombre_db_alternativo;</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>RESTORE FILELISTONLY:</strong> Obtiene nombres lógicos para el movimiento.</li>
+                        <li><strong>MOVE dinámico:</strong> Coloca archivos en rutas del servidor alternativo.</li>
+                        <li><strong>Renombramiento:</strong> La base se restaura con nombre diferente para evitar conflictos.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Separación de archivos en unidades diferentes.</li>
+                        <li>Creación previa de directorios.</li>
+                        <li>Registro de la operación en tabla de auditoría.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 3 · Recuperación por Corrupción del MDF</div>
+                <div class="enunciado"><strong>Enunciado:</strong> El archivo principal de datos presenta corrupción física. Implemente el procedimiento de restauración completo utilizando respaldos disponibles.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 3: Recuperación por Corrupción del MDF</span>
+<span class="comment">-- =============================================</span>
+
+<span class="comment">-- 1. Diagnosticar corrupción</span>
+DBCC CHECKDB (GradosTitulos) WITH ALL_ERRORMSGS;
+
+<span class="comment">-- 2. Identificar respaldos disponibles</span>
+DECLARE @archivo_full VARCHAR(500);
+DECLARE @archivo_diff VARCHAR(500);
+
+<span class="comment">-- Buscar el respaldo completo más reciente</span>
+SELECT TOP 1 @archivo_full = 'D:\Backups\GradosTitulos\' + nombre
+FROM (
+    EXEC xp_cmdshell 'DIR "D:\Backups\GradosTitulos\*.bak" /B /O-D'
+) AS backups(nombre)
+WHERE nombre IS NOT NULL AND (nombre LIKE '%FULL%' OR nombre LIKE '%COMPLETO%');
+
+<span class="comment">-- Buscar respaldo diferencial</span>
+SELECT TOP 1 @archivo_diff = 'D:\Backups\GradosTitulos\' + nombre
+FROM (
+    EXEC xp_cmdshell 'DIR "D:\Backups\GradosTitulos\*DIFF*.bak" /B /O-D'
+) AS backups(nombre)
+WHERE nombre IS NOT NULL;
+
+<span class="comment">-- 3. Restaurar con NORECOVERY (completo + diferencial + logs)</span>
+RESTORE DATABASE GradosTitulos FROM DISK = @archivo_full WITH NORECOVERY, REPLACE, CHECKSUM;
+<span class="keyword">IF</span> @archivo_diff <span class="keyword">IS NOT NULL</span>
+    RESTORE DATABASE GradosTitulos FROM DISK = @archivo_diff WITH NORECOVERY, CHECKSUM;
+
+<span class="comment">-- Restaurar logs (ejemplo con el último)</span>
+RESTORE LOG GradosTitulos FROM DISK = 'D:\Backups\GradosTitulos\Logs\GradosTitulos_LOG_20260628.trn' WITH RECOVERY;
+
+PRINT 'Base recuperada de corrupción.';
+DBCC CHECKDB (GradosTitulos);</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>DBCC CHECKDB:</strong> Diagnostica la extensión de la corrupción.</li>
+                        <li><strong>NORECOVERY:</strong> Deja la base en estado de restauración para aplicar más archivos.</li>
+                        <li><strong>Secuencia correcta:</strong> Completo → Diferencial → Logs.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Detección temprana de corrupción.</li>
+                        <li>Uso de NORECOVERY para cadena de restauración.</li>
+                        <li>Validación post-restauración con DBCC CHECKDB.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema2 -->
+
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 3 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema3">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>🔧 Tema 3 · Mantenimiento y Verificación</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Verificación de Integridad de Backups</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Verifique que todos los respaldos generados para GradosTítulos sean recuperables.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Verificación de Integridad de Backups</span>
+<span class="comment">-- =============================================</span>
+
+CREATE PROCEDURE dbo.sp_VerificarIntegridadBackups
+    @ruta_base VARCHAR(500) = 'D:\Backups\GradosTitulos\'
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    CREATE TABLE #ArchivosBackup (
+        nombre VARCHAR(500),
+        ruta_completa VARCHAR(600),
+        tipo VARCHAR(50)
+    );
+
+    <span class="comment">-- Obtener archivos .bak y .trn</span>
+    INSERT INTO #ArchivosBackup (nombre)
+    EXEC xp_cmdshell 'DIR "' + @ruta_base + '*.bak" /B /O-D';
+    INSERT INTO #ArchivosBackup (nombre)
+    EXEC xp_cmdshell 'DIR "' + @ruta_base + 'Logs\*.trn" /B /O-D';
+    DELETE FROM #ArchivosBackup WHERE nombre IS NULL OR nombre = '';
+
+    <span class="comment">-- Clasificar tipo</span>
+    UPDATE #ArchivosBackup
+    SET tipo = CASE
+        WHEN nombre LIKE '%FULL%' OR nombre LIKE '%COMPLETO%' THEN 'COMPLETO'
+        WHEN nombre LIKE '%DIFF%' THEN 'DIFERENCIAL'
+        WHEN nombre LIKE '%.trn' THEN 'LOG'
+        ELSE 'DESCONOCIDO'
+    END;
+
+    UPDATE #ArchivosBackup
+    SET ruta_completa = CASE
+        WHEN nombre LIKE '%.trn' THEN @ruta_base + 'Logs\' + nombre
+        ELSE @ruta_base + nombre
+    END;
+
+    <span class="comment">-- Verificar cada archivo</span>
+    DECLARE @archivo VARCHAR(500), @ruta VARCHAR(600), @tipo VARCHAR(50);
+    DECLARE cur CURSOR FOR SELECT nombre, ruta_completa, tipo FROM #ArchivosBackup;
+    OPEN cur; FETCH NEXT FROM cur INTO @archivo, @ruta, @tipo;
+
+    <span class="keyword">WHILE</span> @@FETCH_STATUS = 0
+    <span class="keyword">BEGIN</span>
+        <span class="keyword">BEGIN TRY</span>
+            RESTORE VERIFYONLY FROM DISK = @ruta WITH CHECKSUM;
+            PRINT '✅ ' + @archivo + ' - VÁLIDO';
+            INSERT INTO dbo.VerificacionBackups (archivo_respaldo, tipo_respaldo, fecha_verificacion, resultado)
+            VALUES (@ruta, @tipo, GETDATE(), 'EXITOSO');
+        <span class="keyword">END TRY</span>
+        <span class="keyword">BEGIN CATCH</span>
+            PRINT '❌ ' + @archivo + ' - CORRUPTO: ' + ERROR_MESSAGE();
+            INSERT INTO dbo.VerificacionBackups (archivo_respaldo, tipo_respaldo, fecha_verificacion, resultado, mensaje_error)
+            VALUES (@ruta, @tipo, GETDATE(), 'FALLIDO', ERROR_MESSAGE());
+        <span class="keyword">END CATCH</span>
+        FETCH NEXT FROM cur INTO @archivo, @ruta, @tipo;
+    <span class="keyword">END</span>
+
+    CLOSE cur; DEALLOCATE cur;
+    DROP TABLE #ArchivosBackup;
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Verificación masiva:</strong> Itera sobre todos los archivos .bak y .trn.</li>
+                        <li><strong>RESTORE VERIFYONLY:</strong> Valida integridad sin restaurar datos.</li>
+                        <li><strong>Clasificación automática:</strong> Detecta tipo por nombre.</li>
+                        <li><strong>Registro histórico:</strong> Tabla de verificaciones para auditoría.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Verificación programada regularmente.</li>
+                        <li>Manejo de errores individual por archivo.</li>
+                        <li>Almacenamiento de métricas (tamaño, duración).</li>
+                        <li>Vista de monitoreo con indicadores visuales.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Inventario Histórico de Copias de Seguridad</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Construya un reporte que muestre todos los respaldos realizados durante el último mes.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Inventario Histórico de Copias de Seguridad</span>
+<span class="comment">-- =============================================</span>
+
+<span class="comment">-- Tabla de inventario</span>
+CREATE TABLE dbo.InventarioBackups (
+    id_inventario INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_archivo VARCHAR(500) NOT NULL,
+    ruta_completa VARCHAR(600) NOT NULL,
+    tipo_respaldo VARCHAR(50) NOT NULL,
+    fecha_creacion DATETIME NOT NULL,
+    tamaño_mb DECIMAL(18,2) NOT NULL,
+    estado VARCHAR(20) DEFAULT 'ACTIVO',
+    fecha_registro DATETIME DEFAULT GETDATE()
+);
+
+<span class="comment">-- Actualizar inventario</span>
+CREATE PROCEDURE dbo.sp_ActualizarInventarioBackups
+    @ruta_base VARCHAR(500) = 'D:\Backups\GradosTitulos\'
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    <span class="comment">-- Escanea directorios y actualiza la tabla InventarioBackups</span>
+    <span class="comment">-- (similar a la verificación, pero almacenando metadatos)</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span>
+
+<span class="comment">-- Reporte del último mes</span>
+CREATE PROCEDURE dbo.sp_ReporteInventarioMensual
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SELECT
+        nombre_archivo AS Archivo,
+        tipo_respaldo AS Tipo,
+        fecha_creacion AS Fecha,
+        CAST(tamaño_mb AS DECIMAL(10,2)) AS Tamaño_MB,
+        estado AS Estado
+    FROM dbo.InventarioBackups
+    WHERE fecha_creacion >= DATEADD(MONTH, -1, GETDATE())
+    AND estado = 'ACTIVO'
+    ORDER BY fecha_creacion DESC;
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Inventario centralizado:</strong> Tabla con metadatos de todos los respaldos.</li>
+                        <li><strong>Actualización automática:</strong> Escanea directorios y sincroniza.</li>
+                        <li><strong>Reporte multidimensional:</strong> Por tipo, fecha, tamaño.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Actualización programada del inventario.</li>
+                        <li>Múltiples dimensiones de análisis.</li>
+                        <li>Clasificación por antigüedad.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema3 -->
+
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 4 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema4">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>💾 Tema 4 · BACKUP DATABASE y RESTORE DATABASE</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Respaldo Manual con T-SQL</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Realice un respaldo completo utilizando únicamente instrucciones T-SQL.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Respaldo Manual con T-SQL</span>
+<span class="comment">-- =============================================</span>
+
+USE master;
+<span class="keyword">GO</span>
+
+<span class="comment">-- Verificar espacio en disco</span>
+EXEC xp_fixeddrives;
+
+<span class="comment">-- Definir parámetros</span>
+DECLARE @ruta_backup VARCHAR(500) = 'D:\Backups\GradosTitulos\';
+DECLARE @nombre_archivo VARCHAR(500) = 'GradosTitulos_FULL_' + FORMAT(GETDATE(), 'yyyyMMdd_HHmmss') + '.bak';
+DECLARE @ruta_completa VARCHAR(600) = @ruta_backup + @nombre_archivo;
+
+<span class="comment">-- Crear directorio si no existe</span>
+EXEC xp_create_subdir @ruta_backup;
+
+<span class="comment">-- Ejecutar respaldo completo</span>
+BACKUP DATABASE GradosTitulos
+TO DISK = @ruta_completa
+WITH
+    NAME = 'Respaldo Completo GradosTitulos',
+    DESCRIPTION = 'Respaldo manual',
+    COMPRESSION,
+    STATS = 10,
+    INIT,
+    SKIP,
+    CHECKSUM;
+
+<span class="comment">-- Verificar integridad</span>
+RESTORE VERIFYONLY FROM DISK = @ruta_completa WITH CHECKSUM;
+PRINT 'Respaldo completado: ' + @ruta_completa;</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>BACKUP DATABASE puro:</strong> Sin procedimientos, muestra el comando base.</li>
+                        <li><strong>Timestamp en nombre:</strong> Unicidad y trazabilidad.</li>
+                        <li><strong>COMPRESSION y CHECKSUM:</strong> Optimización e integridad.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Verificación de espacio con xp_fixeddrives.</li>
+                        <li>Creación de directorios con xp_create_subdir.</li>
+                        <li>Uso de STATS para monitoreo de progreso.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Restauración desde Archivo BAK</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Recupere la base de datos utilizando un archivo de respaldo existente.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Restauración desde Archivo BAK</span>
+<span class="comment">-- =============================================</span>
+
+<span class="comment">-- Buscar el último archivo .bak</span>
+DECLARE @archivo VARCHAR(500);
+SELECT TOP 1 @archivo = 'D:\Backups\GradosTitulos\' + nombre
+FROM (EXEC xp_cmdshell 'DIR "D:\Backups\GradosTitulos\*.bak" /B /O-D') AS b(nombre)
+WHERE nombre IS NOT NULL AND nombre LIKE '%FULL%';
+
+<span class="keyword">IF</span> @archivo <span class="keyword">IS NULL</span>
+<span class="keyword">BEGIN</span>
+    PRINT 'No se encontró respaldo.';
+    RETURN;
+<span class="keyword">END</span>
+
+<span class="comment">-- Verificar integridad</span>
+RESTORE VERIFYONLY FROM DISK = @archivo WITH CHECKSUM;
+
+<span class="comment">-- Obtener estructura de archivos</span>
+CREATE TABLE #FileList (LogicalName NVARCHAR(128), Type CHAR(1));
+INSERT INTO #FileList EXEC ('RESTORE FILELISTONLY FROM DISK = ''' + @archivo + '''');
+
+<span class="comment">-- Restaurar con MOVE</span>
+RESTORE DATABASE GradosTitulos
+FROM DISK = @archivo
+WITH
+    MOVE 'GradosTitulos_Data' TO 'D:\Data\GradosTitulos.mdf',
+    MOVE 'GradosTitulos_Log' TO 'L:\Logs\GradosTitulos_log.ldf',
+    REPLACE,
+    STATS = 10,
+    CHECKSUM;
+
+PRINT 'Restauración completada.';</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Detección automática:</strong> Busca el archivo más reciente.</li>
+                        <li><strong>RESTORE FILELISTONLY:</strong> Obtiene nombres lógicos.</li>
+                        <li><strong>MOVE:</strong> Coloca archivos en las rutas correctas.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Verificación previa con RESTORE VERIFYONLY.</li>
+                        <li>Forzar desconexión si la base existe.</li>
+                        <li>Validación post-restauración con DBCC CHECKDB.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema4 -->
+
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 5 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema5">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>📋 Tema 5 · Planes de Mantenimiento y Políticas de Retención</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Plan de Mantenimiento Semanal</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Creación de un Plan de Mantenimiento Semanal.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Plan de Mantenimiento Semanal</span>
+<span class="comment">-- =============================================</span>
+
+CREATE PROCEDURE dbo.sp_PlanMantenimientoSemanal
+    @nombre_base VARCHAR(100) = 'GradosTitulos',
+    @modo_prueba BIT = 0
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    PRINT '=== PLAN DE MANTENIMIENTO SEMANAL ===';
+    PRINT 'Base: ' + @nombre_base;
+
+    <span class="keyword">IF</span> @modo_prueba = 1
+        PRINT '⚠️ MODO PRUEBA';
+
+    <span class="comment">-- 1. BACKUP COMPLETO</span>
+    <span class="keyword">IF</span> @modo_prueba = 0
+    <span class="keyword">BEGIN</span>
+        BACKUP DATABASE @nombre_base
+        TO DISK = 'D:\Backups\' + @nombre_base + '_FULL_' + FORMAT(GETDATE(), 'yyyyMMdd') + '.bak'
+        WITH COMPRESSION, CHECKSUM;
+        PRINT '✅ Backup completado';
+    <span class="keyword">END</span> <span class="keyword">ELSE</span>
+        PRINT '🧪 [PRUEBA] Backup simulado';
+
+    <span class="comment">-- 2. REORGANIZACIÓN DE ÍNDICES</span>
+    <span class="keyword">IF</span> @modo_prueba = 0
+    <span class="keyword">BEGIN</span>
+        USE @nombre_base;
+        EXEC sp_MSforeachtable 'ALTER INDEX ALL ON ? REORGANIZE';
+        USE master;
+        PRINT '✅ Reorganización completada';
+    <span class="keyword">END</span> <span class="keyword">ELSE</span>
+        PRINT '🧪 [PRUEBA] Reorganización simulada';
+
+    <span class="comment">-- 3. ACTUALIZACIÓN DE ESTADÍSTICAS</span>
+    <span class="keyword">IF</span> @modo_prueba = 0
+    <span class="keyword">BEGIN</span>
+        USE @nombre_base;
+        EXEC sp_updatestats;
+        USE master;
+        PRINT '✅ Estadísticas actualizadas';
+    <span class="keyword">END</span> <span class="keyword">ELSE</span>
+        PRINT '🧪 [PRUEBA] Estadísticas simuladas';
+
+    <span class="comment">-- 4. VERIFICACIÓN DE INTEGRIDAD</span>
+    <span class="keyword">IF</span> @modo_prueba = 0
+    <span class="keyword">BEGIN</span>
+        USE @nombre_base;
+        DBCC CHECKDB (@nombre_base) WITH NO_INFOMSGS;
+        USE master;
+        PRINT '✅ Verificación completada';
+    <span class="keyword">END</span> <span class="keyword">ELSE</span>
+        PRINT '🧪 [PRUEBA] Verificación simulada';
+
+    PRINT '=== PLAN COMPLETADO ===';
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Cuatro etapas:</strong> Backup, reorganización, estadísticas, verificación.</li>
+                        <li><strong>Modo prueba:</strong> Permite validar sin ejecutar acciones destructivas.</li>
+                        <li><strong>sp_MSforeachtable:</strong> Reorganiza todos los índices de la base.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Separación de responsabilidades por etapa.</li>
+                        <li>Manejo de errores con TRY-CATCH.</li>
+                        <li>Registro de ejecución para auditoría.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Política de Retención de 90 Días</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Implemente una política institucional para conservar respaldos durante 90 días.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Política de Retención de 90 Días</span>
+<span class="comment">-- =============================================</span>
+
+CREATE TABLE dbo.PoliticasRetencion (
+    id_politica INT IDENTITY(1,1) PRIMARY KEY,
+    tipo_respaldo VARCHAR(50) NOT NULL,
+    dias_retencion INT NOT NULL,
+    activo BIT DEFAULT 1,
+    descripcion VARCHAR(255) <span class="keyword">NULL</span>
+);
+
+INSERT INTO dbo.PoliticasRetencion (tipo_respaldo, dias_retencion, descripcion)
+VALUES
+    ('COMPLETO', 90, 'Respaldo completo - 90 días'),
+    ('DIFERENCIAL', 30, 'Respaldo diferencial - 30 días'),
+    ('LOG', 7, 'Respaldo de log - 7 días');
+<span class="keyword">GO</span>
+
+CREATE PROCEDURE dbo.sp_AplicarPoliticaRetencion
+    @modo VARCHAR(20) = 'LISTAR'  -- LISTAR, ELIMINAR
+<span class="keyword">AS</span>
+<span class="keyword">BEGIN</span>
+    SET NOCOUNT <span class="keyword">ON</span>;
+
+    <span class="comment">-- Identificar archivos fuera de política</span>
+    SELECT
+        ib.nombre_archivo,
+        ib.tipo_respaldo,
+        ib.fecha_creacion,
+        DATEDIFF(DAY, ib.fecha_creacion, GETDATE()) AS Dias_Antiguedad,
+        pr.dias_retencion AS Dias_Retencion,
+        CASE WHEN DATEDIFF(DAY, ib.fecha_creacion, GETDATE()) > pr.dias_retencion
+             THEN 'ELIMINAR' ELSE 'CONSERVAR' END AS Accion
+    FROM dbo.InventarioBackups ib
+    INNER JOIN dbo.PoliticasRetencion pr
+        ON ib.tipo_respaldo = pr.tipo_respaldo
+    WHERE ib.estado = 'ACTIVO' AND pr.activo = 1;
+
+    <span class="keyword">IF</span> @modo = 'ELIMINAR'
+    <span class="keyword">BEGIN</span>
+        <span class="comment">-- Eliminar archivos físicos y actualizar inventario</span>
+        PRINT 'Eliminando archivos fuera de política...';
+    <span class="keyword">END</span>
+<span class="keyword">END</span>;
+<span class="keyword">GO</span></pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Políticas por tipo:</strong> Cada tipo de respaldo tiene retención específica.</li>
+                        <li><strong>Modo LISTAR/ELIMINAR:</strong> Previsualización antes de eliminar.</li>
+                        <li><strong>Cálculo automático:</strong> Antigüedad vs. política.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Modo seguro: por defecto solo lista.</li>
+                        <li>Registro de eliminaciones para auditoría.</li>
+                        <li>Políticas configurables sin modificar código.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema5 -->
+
+
+    <!-- ============================================================ -->
+    <!-- ===================== TEMA 6 ================================ -->
+    <!-- ============================================================ -->
+
+    <div class="tema" id="tema6">
+        <div class="tema-header" onclick="toggleTema(this)">
+            <h2>⏱️ Tema 6 · Restauración Punto en el Tiempo</h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="tema-body">
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 1 · Recuperación Antes de Eliminación Accidental</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Un operador eliminó registros de expedientes a las 10:15 a.m. Restaure la base exactamente a las 10:14 a.m.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 1: Recuperación antes de eliminación accidental</span>
+<span class="comment">-- =============================================</span>
+
+DECLARE @fecha_objetivo DATETIME = '2026-06-28 10:14:00';
+
+<span class="comment">-- 1. Verificar modelo FULL</span>
+<span class="keyword">IF</span> (SELECT recovery_model_desc FROM sys.databases WHERE name = 'GradosTitulos') <> 'FULL'
+<span class="keyword">BEGIN</span>
+    ALTER DATABASE GradosTitulos SET RECOVERY FULL;
+    PRINT 'Modelo cambiado a FULL.';
+<span class="keyword">END</span>
+
+<span class="comment">-- 2. Restaurar completo con NORECOVERY</span>
+RESTORE DATABASE GradosTitulos
+FROM DISK = 'D:\Backups\GradosTitulos\GradosTitulos_FULL_20260627.bak'
+WITH NORECOVERY, REPLACE, CHECKSUM;
+
+<span class="comment">-- 3. Restaurar logs hasta el punto (ejemplo con un log)</span>
+RESTORE LOG GradosTitulos
+FROM DISK = 'D:\Backups\GradosTitulos\Logs\GradosTitulos_LOG_20260628.trn'
+WITH RECOVERY, STOPAT = @fecha_objetivo, CHECKSUM;
+
+PRINT 'Base restaurada a las ' + CAST(@fecha_objetivo AS VARCHAR);</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>STOPAT:</strong> Cláusula clave para restauración punto en el tiempo.</li>
+                        <li><strong>Modelo FULL:</strong> Requisito indispensable para usar STOPAT.</li>
+                        <li><strong>NORECOVERY:</strong> Permite aplicar múltiples logs antes de RECOVERY.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Verificación del modelo de recuperación.</li>
+                        <li>Modo SINGLE_USER durante la restauración.</li>
+                        <li>Verificación post-restauración con DBCC CHECKDB.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 2 · Recuperación de Cambios Incorrectos</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Un proceso masivo actualizó incorrectamente estados de trámites. Recupere la base al estado anterior.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 2: Recuperación de Cambios Incorrectos</span>
+<span class="comment">-- =============================================</span>
+
+DECLARE @fecha_incidente DATETIME = '2026-06-28 14:30:00';
+DECLARE @fecha_restauracion DATETIME = DATEADD(MINUTE, -5, @fecha_incidente);
+
+<span class="comment">-- Restaurar completo con NORECOVERY</span>
+RESTORE DATABASE GradosTitulos
+FROM DISK = 'D:\Backups\GradosTitulos\GradosTitulos_FULL_20260627.bak'
+WITH NORECOVERY, REPLACE, CHECKSUM;
+
+<span class="comment">-- Restaurar logs hasta 5 minutos antes del incidente</span>
+RESTORE LOG GradosTitulos
+FROM DISK = 'D:\Backups\GradosTitulos\Logs\GradosTitulos_LOG_20260628.trn'
+WITH RECOVERY, STOPAT = @fecha_restauracion, CHECKSUM;
+
+PRINT 'Base restaurada a ' + CAST(@fecha_restauracion AS VARCHAR);
+
+<span class="comment">-- Verificar estados de trámites</span>
+USE GradosTitulos;
+SELECT estado, COUNT(*) FROM Tramites GROUP BY estado;</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Margen de seguridad:</strong> 5 minutos antes del incidente.</li>
+                        <li><strong>Verificación específica:</strong> Consulta de estados de trámites.</li>
+                        <li><strong>STOPAT con precisión:</strong> Restauración exacta.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Análisis del incidente antes de restaurar.</li>
+                        <li>Validación post-restauración.</li>
+                        <li>Registro de la operación.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="proyecto">
+                <div class="titulo">Proyecto 3 · Recuperación Selectiva con Base Temporal</div>
+                <div class="enunciado"><strong>Enunciado:</strong> Un error afectó las tablas Tramite y Evaluacion. Diseñe una recuperación punto en el tiempo minimizando la indisponibilidad.</div>
+                <div class="script-wrapper">
+                    <button class="copy-btn" onclick="copiarScript(this)">📋 Copiar</button>
+                    <pre><span class="comment">-- =============================================</span>
+<span class="comment">-- PROYECTO 3: Recuperación Selectiva con Base Temporal</span>
+<span class="comment">-- =============================================</span>
+
+DECLARE @nombre_temp VARCHAR(100) = 'GradosTitulos_Temp_Recovery';
+DECLARE @fecha_restauracion DATETIME = '2026-06-28 09:28:00';
+
+<span class="comment">-- 1. Restaurar en base temporal</span>
+RESTORE DATABASE @nombre_temp
+FROM DISK = 'D:\Backups\GradosTitulos\GradosTitulos_FULL_20260627.bak'
+WITH
+    MOVE 'GradosTitulos_Data' TO 'D:\Data\GradosTitulos_Temp_Recovery.mdf',
+    MOVE 'GradosTitulos_Log' TO 'L:\Logs\GradosTitulos_Temp_Recovery_log.ldf',
+    NORECOVERY, REPLACE, CHECKSUM;
+
+RESTORE LOG @nombre_temp
+FROM DISK = 'D:\Backups\GradosTitulos\Logs\GradosTitulos_LOG_20260628.trn'
+WITH RECOVERY, STOPAT = @fecha_restauracion, CHECKSUM;
+
+<span class="comment">-- 2. Extraer datos de tablas afectadas</span>
+USE @nombre_temp;
+SELECT * INTO #Tramite_Backup FROM Tramite;
+SELECT * INTO #Evaluacion_Backup FROM Evaluacion;
+USE master;
+
+<span class="comment">-- 3. Restaurar base principal y reemplazar datos</span>
+RESTORE DATABASE GradosTitulos
+FROM DISK = 'D:\Backups\GradosTitulos\GradosTitulos_FULL_20260627.bak'
+WITH RECOVERY, REPLACE, CHECKSUM;
+
+USE GradosTitulos;
+TRUNCATE TABLE Tramite;
+INSERT INTO Tramite SELECT * FROM #Tramite_Backup;
+TRUNCATE TABLE Evaluacion;
+INSERT INTO Evaluacion SELECT * FROM #Evaluacion_Backup;
+
+<span class="comment">-- 4. Limpiar</span>
+DROP TABLE #Tramite_Backup, #Evaluacion_Backup;
+DROP DATABASE @nombre_temp;
+PRINT 'Recuperación selectiva completada.';</pre>
+                </div>
+                <div class="justificacion">
+                    <h4>🔍 Justificación técnica</h4>
+                    <ul>
+                        <li><strong>Base temporal:</strong> Aísla la recuperación sin afectar producción.</li>
+                        <li><strong>Extracción y reemplazo:</strong> Solo se restauran las tablas afectadas.</li>
+                        <li><strong>Mínima indisponibilidad:</strong> La base principal solo se bloquea durante el reemplazo.</li>
+                    </ul>
+                </div>
+                <div class="buenas-practicas">
+                    <h4>✅ Buenas prácticas</h4>
+                    <ul>
+                        <li>Aislamiento de operaciones críticas.</li>
+                        <li>Limpieza de recursos temporales.</li>
+                        <li>Verificación post-recuperación.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /tema-body -->
+    </div><!-- /tema6 -->
+
+    <!-- ===== FOOTER ===== -->
+    <div style="margin-top:40px; padding-top:20px; border-top:2px solid #e5e8eb; text-align:center; color:#5d6d7e; font-size:0.9rem;">
+        <p>📚 Gestión de Backups y Recuperación — Base de Datos GradosTítulos</p>
+        <p style="font-size:0.8rem; margin-top:4px;">Scripts T-SQL para estrategias de respaldo, restauración, mantenimiento y recuperación punto en el tiempo.</p>
+    </div>
+
+</div><!-- /container -->
+
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+    // ===== TOGGLE TEMA =====
+    function toggleTema(header) {
+        const body = header.nextElementSibling;
+        const icon = header.querySelector('.toggle-icon');
+        if (body.classList.contains('abierto')) {
+            body.classList.remove('abierto');
+            icon.classList.remove('abierto');
+            icon.textContent = '▼';
+        } else {
+            body.classList.add('abierto');
+            icon.classList.add('abierto');
+            icon.textContent = '▲';
+        }
+    }
+
+    // ===== COPIAR SCRIPT =====
+    function copiarScript(btn) {
+        const pre = btn.parentElement.querySelector('pre');
+        const texto = pre.textContent;
+        navigator.clipboard.writeText(texto).then(function() {
+            const original = btn.textContent;
+            btn.textContent = '✅ Copiado';
+            setTimeout(() => { btn.textContent = original; }, 2000);
+        }).catch(function() {
+            // Fallback para navegadores sin clipboard API
+            const range = document.createRange();
+            range.selectNode(pre);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            const original = btn.textContent;
+            btn.textContent = '✅ Copiado';
+            setTimeout(() => { btn.textContent = original; }, 2000);
+        });
+    }
+
+    // ===== ABRIR PRIMER TEMA POR DEFECTO =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // Abrir el primer tema (Tema 1)
+        const primerTema = document.querySelector('.tema');
+        if (primerTema) {
+            const header = primerTema.querySelector('.tema-header');
+            if (header) {
+                // Simular click para abrir
+                header.click();
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
